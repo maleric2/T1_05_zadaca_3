@@ -15,7 +15,7 @@ public class VT100Application {
     private static VT100Application instance;
 
     private VT100Application() {
-        System.out.println("New VT1000 Terminal Application..");
+        System.out.println("New VT100 Terminal Application..");
     }
 
     public static VT100Application getInstance() {

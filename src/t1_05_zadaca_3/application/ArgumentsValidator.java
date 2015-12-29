@@ -5,6 +5,8 @@
  */
 package t1_05_zadaca_3.application;
 
+import java.io.File;
+
 /**
  *
  * @author Marko
@@ -19,7 +21,7 @@ public class ArgumentsValidator {
         
         if (args.length < 5) {
             //System.out.println("ERROR: Parameters do not match");
-            errorMsg = "ERROR: Parameters do not match";
+            errorMsg = "ERROR: Number of parameters doesn't match";
             return false;
         } else {
             for (int i = 0; i < 5; i++) {
@@ -56,7 +58,18 @@ public class ArgumentsValidator {
                 errorMsg = "ERROR: 'podjelaOkvira' must be V or O";
                 return false;
             }
-            //TODO: provjera postojanja putanje za 'putanja2_naziv'
+            if (!putanja2_naziv.isEmpty()) {
+                File f = new File(putanja2_naziv);
+                if (!f.isDirectory()) {
+                    //System.out.println("ERROR: 'putanja2_naziv' doesn't exist");
+                    errorMsg = "ERROR: 'putanja2_naziv' doesn't exist";
+                    return false;
+                }
+            } else {
+                //System.out.println("ERROR: 'putanja2_naziv' doesn't exist");
+                errorMsg = "ERROR: 'putanja2_naziv' doesn't exist";
+                return false;
+            }
 
             return true;
         }
