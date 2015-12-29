@@ -5,6 +5,8 @@
  */
 package t1_05_zadaca_3.application;
 
+import t1_05_zadaca_3.structure.ElementStructure;
+
 /**
  * Glavna klasa za VT100 Terminal
  * Singleton
@@ -42,6 +44,10 @@ public class VT100Application {
         } else {
             //validator is successful
             //TODO: Do some app logic
+            
+            //Struktura ELEMENATA test
+            ElementStructure es = new ElementStructure();
+            es.setRootPath(args[3]);
         }
 
     }
