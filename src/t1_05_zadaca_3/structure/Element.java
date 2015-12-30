@@ -13,21 +13,21 @@ import java.util.List;
  * @author Filip
  */
 public class Element {
-     
+
     private String naziv;
     private String vrijemePromjene;
-    private long velicina;
+    private String velicina;
     //vrste u strukturi: korijen, dat i dir
     private boolean korijen;
     private boolean datoteka;
     private boolean direktorij;
     //ima li korijen ili direktorij djecu, defaultno false za datoteke
-    private boolean imaDjecu; 
+    private boolean imaDjecu;
+    private String roditelj;
 
     private List<Element> elementi;
-    
-    
-    public Element(String naziv, String vrijemePromjene, long velicina, boolean korijen, boolean datoteka, boolean direktorij, boolean imaDjecu) {
+
+    public Element(String naziv, String vrijemePromjene, String velicina, String roditelj, boolean korijen, boolean datoteka, boolean direktorij, boolean imaDjecu) {
         this.naziv = naziv;
         this.velicina = velicina;
         this.vrijemePromjene = vrijemePromjene;
@@ -35,15 +35,16 @@ public class Element {
         this.direktorij = direktorij;
         this.datoteka = datoteka;
         this.imaDjecu = imaDjecu;
-        
+        this.roditelj = roditelj;
+
         elementi = new ArrayList<>();
     }
-    
+
     //operacija za composite
     public void addElement(Element e) {
         elementi.add(e);
     }
-    
+
     public void removeElement(Element e) {
         elementi.remove(e);
     }
@@ -56,7 +57,10 @@ public class Element {
         return elementi;
     }
 
-    //prikaz podataka o objektu
+    /**
+     * Override Object metode za prikaz
+     * @return 
+     */
     @Override
     public String toString() {
         String tip = "";
@@ -67,19 +71,19 @@ public class Element {
         } else if (direktorij) {
             tip = "-> direktorij";
         }
-        return (naziv + " " + vrijemePromjene + " " + velicina + " " + tip);
+        return (naziv + " " + vrijemePromjene + " " + velicina + " B " + tip + " Roditelj: " + roditelj);
     }
-    
-    
-    //METODA ZA KLONIRANJE, kasnije bude trebala za memento i jos jedna treba tamo gdi se bude pozivao memento
-     public Object kloniranje() {
+
+    /**
+     * Metoda za kloniranje elemenata, biti će potrebna za Memento
+     * @return 
+     */
+    public Object kloniranje() {
         Element element;
-        element = new Element(this.naziv, this.vrijemePromjene, this.velicina, this.korijen, this.datoteka, this.direktorij, this.imaDjecu);
+        element = new Element(this.naziv, this.vrijemePromjene, this.velicina, this.roditelj, this.korijen, this.datoteka, this.direktorij, this.imaDjecu);
         return element;
     }
 
-     
-     
     //GETTERI I SETTERI
     public String getNaziv() {
         return naziv;
@@ -97,14 +101,14 @@ public class Element {
         this.vrijemePromjene = vrijemePromjene;
     }
 
-    public long getVelicina() {
+    public String getVelicina() {
         return velicina;
     }
 
-    public void setVelicina(long velicina) {
+    public void setVelicina(String velicina) {
         this.velicina = velicina;
-    } 
-     
+    }
+
     public boolean isKorijen() {
         return korijen;
     }
@@ -136,4 +140,13 @@ public class Element {
     public void setImaDjecu(boolean imaDjecu) {
         this.imaDjecu = imaDjecu;
     }
+
+    public String getRoditelj() {
+        return roditelj;
+    }
+
+    public void setRoditelj(String roditelj) {
+        this.roditelj = roditelj;
+    }
+
 }
