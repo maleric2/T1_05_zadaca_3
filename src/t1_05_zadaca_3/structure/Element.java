@@ -24,10 +24,12 @@ public class Element {
     //ima li korijen ili direktorij djecu, defaultno false za datoteke
     private boolean imaDjecu;
     private String roditelj;
+    private int hashRoditeljskePutanje;
+    private int hashPutanjeElementa;
 
     private List<Element> elementi;
 
-    public Element(String naziv, String vrijemePromjene, String velicina, String roditelj, boolean korijen, boolean datoteka, boolean direktorij, boolean imaDjecu) {
+    public Element(String naziv, String vrijemePromjene, String velicina, String roditelj, int hashRoditelja, int hashNaziva, boolean korijen, boolean datoteka, boolean direktorij, boolean imaDjecu) {
         this.naziv = naziv;
         this.velicina = velicina;
         this.vrijemePromjene = vrijemePromjene;
@@ -36,6 +38,8 @@ public class Element {
         this.datoteka = datoteka;
         this.imaDjecu = imaDjecu;
         this.roditelj = roditelj;
+        this.hashRoditeljskePutanje = hashRoditelja;
+        this.hashPutanjeElementa = hashNaziva;
 
         elementi = new ArrayList<>();
     }
@@ -56,10 +60,15 @@ public class Element {
     public List<Element> getElementi() {
         return elementi;
     }
+    
+    public Element getElement(int i) {
+        return elementi.get(i);
+    }
 
     /**
      * Override Object metode za prikaz
-     * @return 
+     *
+     * @return
      */
     @Override
     public String toString() {
@@ -71,16 +80,18 @@ public class Element {
         } else if (direktorij) {
             tip = "-> direktorij";
         }
-        return (naziv + " " + vrijemePromjene + " " + velicina + " B " + tip + " Roditelj: " + roditelj);
+//        return (naziv + "\t\t" + vrijemePromjene + " " + velicina + " B " + tip + " ->\t Roditelj:" + roditelj + " -> Hash roditelja: " + hashRoditeljskePutanje);
+        return (naziv + " Veličina: " + velicina + " Datum: " + vrijemePromjene + " Hash: " + hashPutanjeElementa +" " + tip + " ->\t Roditelj:" + roditelj + " -> Hash roditelja: " + hashRoditeljskePutanje);
     }
 
     /**
      * Metoda za kloniranje elemenata, biti će potrebna za Memento
-     * @return 
+     *
+     * @return
      */
     public Object kloniranje() {
         Element element;
-        element = new Element(this.naziv, this.vrijemePromjene, this.velicina, this.roditelj, this.korijen, this.datoteka, this.direktorij, this.imaDjecu);
+        element = new Element(this.naziv, this.vrijemePromjene, this.velicina, this.roditelj, this.hashRoditeljskePutanje, this.hashPutanjeElementa, this.korijen, this.datoteka, this.direktorij, this.imaDjecu);
         return element;
     }
 
@@ -147,6 +158,22 @@ public class Element {
 
     public void setRoditelj(String roditelj) {
         this.roditelj = roditelj;
+    }
+
+    public int getHashRoditelja() {
+        return hashRoditeljskePutanje;
+    }
+
+    public void setHashRoditelja(int hashRoditelja) {
+        this.hashRoditeljskePutanje = hashRoditelja;
+    }
+
+    public int getHashNaziva() {
+        return hashPutanjeElementa;
+    }
+
+    public void setHashNaziva(int hashNaziva) {
+        this.hashPutanjeElementa = hashNaziva;
     }
 
 }

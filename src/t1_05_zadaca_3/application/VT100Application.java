@@ -6,6 +6,7 @@
 package t1_05_zadaca_3.application;
 
 import t1_05_zadaca_3.structure.ElementStructure;
+import t1_05_zadaca_3.structure.PrintStructure;
 
 /**
  * Glavna klasa za VT100 Terminal
@@ -45,9 +46,12 @@ public class VT100Application {
             //validator is successful
             //TODO: Do some app logic
             
-            //Struktura ELEMENATA test
+            //Struktura ELEMENATA
             ElementStructure es = new ElementStructure();
+            PrintStructure ps = new PrintStructure();
             es.setRootPath(args[3]);
+            System.out.println(es.getKorijenskiElement().toString());
+            ps.printStructure(es.getKorijenskiElement(), es);
         }
 
     }

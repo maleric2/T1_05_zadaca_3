@@ -16,182 +16,191 @@ import java.util.List;
  *
  * @author Filip
  */
-public class ElementStructure {
-    
+public class ElementStructure implements Container {
+
     private static String korijenskaPutanja;
     private static File korijenskiDirektorij;
     private static Element korijenskiElement;
-    
-    private static List<Element> korijen;
+
     private static List<Element> direktoriji;
     private static List<Element> datoteke;
-    
     private static List<Element> struktura;
-    
+
     public ElementStructure() {
-        korijen = new ArrayList<>();
         direktoriji = new ArrayList<>();
         datoteke = new ArrayList<>();
         struktura = new ArrayList<>();
     }
-    
-    public void test() {
-        
-    }
-    
+
     /**
      * Postavljanje putanje za korijenski direktorij
-     * @param path 
+     *
+     * @param path
      */
     public void setRootPath(String path) {
-        korijenskaPutanja = path;
-       
-        //test
+        korijenskaPutanja = path; 
+        
         createStructure();
-        //test 
     }
-    
+
     /**
      * Metoda za kreiranje strukture stabla direktorija i datoteka
      */
     public static void createStructure() {
         struktura.clear();
-        
+
         korijenskiDirektorij = new File(korijenskaPutanja);
+
+        korijenskiElement = new Element(korijenskaPutanja, convertDate(korijenskiDirektorij), elementSize(korijenskiDirektorij), korijenskiDirektorij.toString(), generateHash(korijenskaPutanja), generateHash(korijenskaPutanja), true, true, true, true);
+
         
-        korijenskiElement = new Element(korijenskaPutanja, convertDate(korijenskiDirektorij), elementSize(korijenskiDirektorij), korijenskiDirektorij.toString(), true, true, true, true);
-        
+        //test za pregled pronađenih dir i dat
         System.out.println("---------------KORIJEN---------------------");
         System.out.println(korijenskiElement.toString());
         System.out.println("-------------------------------------------");
-        
-        
+
         checkFileSystem(korijenskiDirektorij);
         System.out.println("---------------DIREKTORIJI---------------------");
         for (Element e : direktoriji) {
             System.out.println(e.toString());
         }
         System.out.println("-----------------------------------------------");
-        
+
         System.out.println("");
         System.out.println("---------------DATOTEKE-----------------------");
         for (Element e : datoteke) {
             System.out.println(e.toString());
         }
-        System.out.println("----------------------------------------------"); 
-        
-        
-        //struktura
-        String s[] = korijenskiElement.getNaziv().split("\\\\");
-        String nazivKorijena = s[s.length-1];
-        
-        for (Element dat : datoteke)
-            if (dat.getRoditelj().equalsIgnoreCase(nazivKorijena))
-                    korijenskiElement.addElement(dat);
-        for (Element dir : direktoriji)
-            if (dir.getRoditelj().equalsIgnoreCase(nazivKorijena))
-                    korijenskiElement.addElement(dir);
-        
-        for (Element dir : direktoriji)
-            for (Element dat : datoteke)
-                if (dat.getRoditelj().equalsIgnoreCase(dir.getNaziv()))
-                    dir.addElement(dat);
-            
-        for (Element dir1 : direktoriji)
-            for (Element dir2 : direktoriji)
-                if (dir1.getRoditelj().equalsIgnoreCase(dir2.getNaziv())) 
-                    dir2.addElement(dir1);
+        System.out.println("----------------------------------------------");
 
-        struktura.add(korijenskiElement);
-        //---------------------------------------------------------
-        
-        
-        
-        //testni ispis -> zamijeniti Iteratorom, rekurzijom
-        System.out.println("\n--------------STRUKTURA-----------------------");
-        
-        for (Element e : struktura) {
-            System.out.println(e.toString());
-            for (Element e1 : e.getElementi()) {
-                System.out.println(e1.toString());
-                for (Element e2 : e1.getElementi()) {
-                    System.out.println(e2.toString());
-                    for (Element e3 : e2.getElementi()) {
-                        System.out.println(e3.toString());
-                    }
+        // kreiranje strukture----------------------------------------------------------
+        //punjenje korijena
+        String s[] = korijenskiElement.getNaziv().split("\\\\");
+        String nazivKorijena = s[s.length - 1];
+
+        //dodavanje datoteka korijenu ako ih ima
+        for (Element dat : datoteke) {
+            if (dat.getRoditelj().equalsIgnoreCase(nazivKorijena)) {
+                korijenskiElement.addElement(dat);
+            }
+        }
+
+        //dodavanje direktorija u korijen ako ih ima
+        for (Element dir : direktoriji) {
+            if (dir.getRoditelj().equalsIgnoreCase(nazivKorijena)) {
+                korijenskiElement.addElement(dir);
+            }
+        }
+
+        //dodavanje direktorija u direktorije ako ih ima
+        for (Element dir1 : direktoriji) {
+            for (Element dir2 : direktoriji) {
+                if (dir1.getHashRoditelja() == dir2.getHashNaziva()) {
+                    dir2.addElement(dir1);
                 }
             }
         }
-        
-        
+
+        //dodavanje datoteke direktoriju ako ih ima
+        for (Element dir : direktoriji) {
+            for (Element dat : datoteke) {
+                if (dat.getRoditelj().equalsIgnoreCase(dir.getNaziv()) && dat.getHashRoditelja() == dir.getHashNaziva()) {
+                    dir.addElement(dat);
+                }
+            }
+        }
+
+        struktura.add(korijenskiElement);
+        //---------------------------------------------------------
+
     }
-    
+
     /**
      * Rekurzivno pretraživanje strukture za datoteke i direktorije
-     * @param f 
+     *
+     * @param f
      */
     public static void checkFileSystem(File f) {
         String naziv = "";
         boolean djeca = false;
-        
+
         for (File file : f.listFiles()) {
             if (file.isFile()) {
                 naziv = file.getName();
-                datoteke.add(new Element(naziv, convertDate(file), elementSize(file), getParentName(file), false, true, false, false));
+                datoteke.add(new Element(naziv, convertDate(file), elementSize(file), getParentName(file), generateHash(file.getParentFile().getAbsolutePath()), generateHash(file.getAbsolutePath()), false, true, false, false));
             } else if (file.isDirectory()) {
                 naziv = file.getName();
                 djeca = checkIfChildren(f);
-                direktoriji.add(new Element(naziv, convertDate(file), elementSize(file), getParentName(file), false, false, true, djeca));
+                direktoriji.add(new Element(naziv, convertDate(file), elementSize(file), getParentName(file), generateHash(file.getParentFile().getAbsolutePath()), generateHash(file.getAbsolutePath()), false, false, true, djeca));
                 checkFileSystem(file);
             }
         }
     }
-    
+
+    /**
+     * Metoda za generiranje hash-a imena roditelja pošto ne smijemo u strukturi
+     * pamtiti apsolutne putanje mapa
+     *
+     * @param roditelj
+     * @return
+     */
+    public static int generateHash(String roditelj) {
+        int hash = 19;
+        for (int i = 0; i < roditelj.length(); i++) {
+            hash = (hash << 15) - hash + roditelj.charAt(i);
+        }
+        return hash;
+    }
+
     /**
      * Dobivanje imena roditelja bez pune putanje
+     *
      * @param f
-     * @return 
+     * @return
      */
     public static String getParentName(File f) {
         File dir = new File(f.getParent());
         String s = dir.getName();
         return s;
     }
-    
+
     /**
      * Meotda koja provjerava da li direktorij ima djecu
+     *
      * @param f
-     * @return 
+     * @return
      */
     public static boolean checkIfChildren(File f) {
-        if (f.list().length > 0)
+        if (f.list().length > 0) {
             return true;
-        else
+        } else {
             return false;
+        }
     }
-    
+
     /**
      * Metoda za formatiranje datuma
+     *
      * @param f
-     * @return 
+     * @return
      */
     public static String convertDate(File f) {
-//        File f = new File(nazivDatDir);
         long datum = f.lastModified();
         Date date = new Date(datum);
         Format format = new SimpleDateFormat("dd.MM.yyyy. HH:mm:ss");
 
         return format.format(date);
     }
-    
+
     /**
-     * Metoda kojoj proslijeđujemo naziv elementa iz datotečne strukture 
+     * Metoda kojoj proslijeđujemo naziv elementa iz datotečne strukture
+     *
      * @param f
      * @return veličina elementa
      */
     public static String elementSize(File f) {
         long velicina = 0;
-        
+
         if (f.isDirectory()) {
             velicina = directorySize(f);
             return formatiranaVelicina(velicina);
@@ -201,62 +210,148 @@ public class ElementStructure {
         }
         return formatiranaVelicina(velicina);
     }
-    
+
     /**
-     * Metoda za računanje veličine direktorija
+     * Metoda za računanje veličine direktorija koristi se u metodi
+     * elementSize()
+     *
      * @param directory
-     * @return 
+     * @return
      */
     public static long directorySize(File directory) {
         long length = 0;
         for (File file : directory.listFiles()) {
-            
-            if (file.isFile())
+
+            if (file.isFile()) {
                 length += file.length();
-            else
+            } else {
                 length += directorySize(file);
+            }
         }
         return length;
     }
-    
+
     /**
-     * Metoda za računanje veličine datoteke
+     * Metoda za računanje veličine datoteke koristi se u metodi elementSize()
+     *
      * @param directory
-     * @return 
+     * @return
      */
     public static long fileSize(File directory) {
         long length = 0;
         length = directory.length();
         return length;
     }
-    
+
     /**
-     * Foramtirana velicina u bajtovima
+     * Foramtirana veličina u bajtovima
+     *
      * @param broj
-     * @return 
+     * @return
      */
     public static String formatiranaVelicina(long broj) {
         String velicina = String.format("%,3d", broj);
         return velicina;
     }
-    
+
     /**
      * Metoda vraća broj kreiranih direktorija u strukturi
+     *
      * @param direktoriji
-     * @return 
+     * @return
      */
     public static int brKreiranihDirektorija(List<Element> direktoriji) {
         int brDir = direktoriji.size();
         return brDir;
     }
-    
+
     /**
      * Metoda vraća broj kreiranih datoteka u strukturi
+     *
      * @param datoteke
-     * @return 
+     * @return
      */
     public static int brKreiranihDatoteka(List<Element> datoteke) {
         int brDat = datoteke.size();
         return brDat;
     }
+
+    @Override
+    public Iterator getIterator() {
+        return new StructureIterator();
+    }
+
+    /**
+     * Klasa unutarnjeg iteratora
+     */
+    private class StructureIterator implements Iterator {
+
+        int index;
+
+        @Override
+        public boolean hasNext(Element e) {
+            if (index < e.getElementi().size()) {
+                return true;
+            }
+            return false;
+        }
+
+        @Override
+        public Object next(Element e) {
+            if (this.hasNext(e)) {
+                return e.getElement(index++);
+            }
+            return null;
+        }
+
+    }
+
+    public String getKorijenskaPutanja() {
+        return korijenskaPutanja;
+    }
+
+    public void setKorijenskaPutanja(String aKorijenskaPutanja) {
+        korijenskaPutanja = aKorijenskaPutanja;
+    }
+
+    public File getKorijenskiDirektorij() {
+        return korijenskiDirektorij;
+    }
+
+    public void setKorijenskiDirektorij(File aKorijenskiDirektorij) {
+        korijenskiDirektorij = aKorijenskiDirektorij;
+    }
+
+    public Element getKorijenskiElement() {
+        return korijenskiElement;
+    }
+
+    public void setKorijenskiElement(Element aKorijenskiElement) {
+        korijenskiElement = aKorijenskiElement;
+    }
+
+    public List<Element> getDirektoriji() {
+        return direktoriji;
+    }
+
+    public void setDirektoriji(List<Element> aDirektoriji) {
+        direktoriji = aDirektoriji;
+    }
+
+    public List<Element> getDatoteke() {
+        return datoteke;
+    }
+
+    public void setDatoteke(List<Element> aDatoteke) {
+        datoteke = aDatoteke;
+    }
+
+    public List<Element> getStruktura() {
+        return struktura;
+    }
+
+    public void setStruktura(List<Element> aStruktura) {
+        struktura = aStruktura;
+    }
+
 }
