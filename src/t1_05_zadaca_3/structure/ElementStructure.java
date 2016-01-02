@@ -38,9 +38,13 @@ public class ElementStructure implements Container {
      * @param path
      */
     public void setRootPath(String path) {
-        korijenskaPutanja = path; 
-        
+        korijenskaPutanja = path;
+
         createStructure();
+        elementSize(korijenskiDirektorij);
+        System.out.println("Broj kreiranih direktorija: " + brKreiranihDirektorija(direktoriji));
+        System.out.println("Broj kreiranih datoteka: " + brKreiranihDatoteka(datoteke));
+        System.out.println("Veličina cijele strukture: " + elementSize(korijenskiDirektorij) + " B");
     }
 
     /**
@@ -51,43 +55,21 @@ public class ElementStructure implements Container {
 
         korijenskiDirektorij = new File(korijenskaPutanja);
 
-        korijenskiElement = new Element(korijenskaPutanja, convertDate(korijenskiDirektorij), elementSize(korijenskiDirektorij), korijenskiDirektorij.toString(), generateHash(korijenskaPutanja), generateHash(korijenskaPutanja), true, true, true, true);
-
-        
-        //test za pregled pronađenih dir i dat
-        System.out.println("---------------KORIJEN---------------------");
-        System.out.println(korijenskiElement.toString());
-        System.out.println("-------------------------------------------");
+        korijenskiElement = new Element(korijenskaPutanja, convertDate(korijenskiDirektorij), elementSize(korijenskiDirektorij), korijenskiDirektorij.toString(), generateHash(korijenskaPutanja), generateHash(korijenskaPutanja), true, false, true, true);
 
         checkFileSystem(korijenskiDirektorij);
-        System.out.println("---------------DIREKTORIJI---------------------");
-        for (Element e : direktoriji) {
-            System.out.println(e.toString());
-        }
-        System.out.println("-----------------------------------------------");
-
-        System.out.println("");
-        System.out.println("---------------DATOTEKE-----------------------");
-        for (Element e : datoteke) {
-            System.out.println(e.toString());
-        }
-        System.out.println("----------------------------------------------");
 
         // kreiranje strukture----------------------------------------------------------
-        //punjenje korijena
-        String s[] = korijenskiElement.getNaziv().split("\\\\");
-        String nazivKorijena = s[s.length - 1];
-
         //dodavanje datoteka korijenu ako ih ima
         for (Element dat : datoteke) {
-            if (dat.getRoditelj().equalsIgnoreCase(nazivKorijena)) {
+            if (dat.getHashRoditelja() == korijenskiElement.getHashNaziva()) {
                 korijenskiElement.addElement(dat);
             }
         }
 
         //dodavanje direktorija u korijen ako ih ima
         for (Element dir : direktoriji) {
-            if (dir.getRoditelj().equalsIgnoreCase(nazivKorijena)) {
+            if (dir.getHashRoditelja() == korijenskiElement.getHashNaziva()) {
                 korijenskiElement.addElement(dir);
             }
         }
@@ -111,8 +93,8 @@ public class ElementStructure implements Container {
         }
 
         struktura.add(korijenskiElement);
-        //---------------------------------------------------------
 
+        //---------------------------------------------------------
     }
 
     /**

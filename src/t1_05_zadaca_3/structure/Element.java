@@ -60,7 +60,7 @@ public class Element {
     public List<Element> getElementi() {
         return elementi;
     }
-    
+
     public Element getElement(int i) {
         return elementi.get(i);
     }
@@ -81,7 +81,7 @@ public class Element {
             tip = "-> direktorij";
         }
 //        return (naziv + "\t\t" + vrijemePromjene + " " + velicina + " B " + tip + " ->\t Roditelj:" + roditelj + " -> Hash roditelja: " + hashRoditeljskePutanje);
-        return (naziv + " Veličina: " + velicina + " Datum: " + vrijemePromjene + " Hash: " + hashPutanjeElementa +" " + tip + " ->\t Roditelj:" + roditelj + " -> Hash roditelja: " + hashRoditeljskePutanje);
+        return (naziv + " Veličina: " + velicina + " Datum: " + vrijemePromjene + " Hash: " + hashPutanjeElementa + " " + tip + " ->\t Roditelj:" + roditelj + " -> Hash roditelja: " + hashRoditeljskePutanje);
     }
 
     /**
