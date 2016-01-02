@@ -9,6 +9,7 @@ import t1_05_zadaca_3.structure.CareTaker;
 import t1_05_zadaca_3.structure.ElementStructure;
 import t1_05_zadaca_3.structure.Originator;
 import t1_05_zadaca_3.structure.PrintStructure;
+import t1_05_zadaca_3.windows.WindowFactory;
 
 /**
  * Glavna klasa za VT100 Terminal Singleton
@@ -57,6 +58,12 @@ public class VT100Application {
             PrintStructure ps = new PrintStructure();
             es.setRootPath(args[3]);
             ps.printStructure(es.getStrukturaElemenata(), es);
+            
+            //prikaz prozora
+            //FRAMEOVI
+            System.out.println("---------------------------------------------\n");
+            WindowFactory ff = new WindowFactory();
+            ff.createWindow(args);
 
             /*
              //spremanje mementom
