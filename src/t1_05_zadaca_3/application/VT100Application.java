@@ -5,17 +5,22 @@
  */
 package t1_05_zadaca_3.application;
 
+import t1_05_zadaca_3.structure.CareTaker;
 import t1_05_zadaca_3.structure.ElementStructure;
+import t1_05_zadaca_3.structure.Originator;
 import t1_05_zadaca_3.structure.PrintStructure;
 
 /**
- * Glavna klasa za VT100 Terminal
- * Singleton
+ * Glavna klasa za VT100 Terminal Singleton
+ *
  * @author Marko
  */
 public class VT100Application {
 
     private static VT100Application instance;
+
+    public static Originator izvor = new Originator();
+    public static CareTaker save = new CareTaker();
 
     private VT100Application() {
         System.out.println("New VT100 Terminal Application..");
@@ -32,11 +37,12 @@ public class VT100Application {
         return instance;
     }
 
-/**
- * Start metoda koja pokreće aplikaciju
- * U metodi se nalaze pozivi svih ostalih funkcionalnosti (poziva ispis izbornika i sl.)
- * @param args 
- */
+    /**
+     * Start metoda koja pokreće aplikaciju U metodi se nalaze pozivi svih
+     * ostalih funkcionalnosti (poziva ispis izbornika i sl.)
+     *
+     * @param args
+     */
     public void start(String[] args) {
         //validator
         ArgumentsValidator validator = new ArgumentsValidator();
@@ -45,13 +51,19 @@ public class VT100Application {
         } else {
             //validator is successful
             //TODO: Do some app logic
-            
+
             //Struktura ELEMENATA
             ElementStructure es = new ElementStructure();
             PrintStructure ps = new PrintStructure();
             es.setRootPath(args[3]);
             System.out.println(es.getKorijenskiElement().toString());
             ps.printStructure(es.getKorijenskiElement(), es);
+
+            /*
+             //spremanje mementom
+             izvor.setState(es);
+             save.add(izvor.saveStateToMemento());
+             */
         }
 
     }
