@@ -21,15 +21,16 @@ public class ElementStructure implements Container {
     private static String korijenskaPutanja;
     private static File korijenskiDirektorij;
     private static Element korijenskiElement;
+    private static Element strukturaElemenata;
 
     private static List<Element> direktoriji;
     private static List<Element> datoteke;
-    private static List<Element> struktura;
 
     public ElementStructure() {
         direktoriji = new ArrayList<>();
         datoteke = new ArrayList<>();
-        struktura = new ArrayList<>();
+        //element u koji spremamo sve ostale uključujući i korijen tako da ne treba raditi s listama
+        strukturaElemenata = new Element(null, null, null, null, 0, 0, false, false, false, true);
     }
 
     /**
@@ -51,7 +52,7 @@ public class ElementStructure implements Container {
      * Metoda za kreiranje strukture stabla direktorija i datoteka
      */
     public static void createStructure() {
-        struktura.clear();
+        strukturaElemenata.clearListOfElements();
 
         korijenskiDirektorij = new File(korijenskaPutanja);
 
@@ -92,8 +93,7 @@ public class ElementStructure implements Container {
             }
         }
 
-        struktura.add(korijenskiElement);
-
+        strukturaElemenata.addElement(korijenskiElement);
         //---------------------------------------------------------
     }
 
@@ -328,12 +328,12 @@ public class ElementStructure implements Container {
         datoteke = aDatoteke;
     }
 
-    public List<Element> getStruktura() {
-        return struktura;
+    public Element getStrukturaElemenata() {
+        return strukturaElemenata;
     }
 
-    public void setStruktura(List<Element> aStruktura) {
-        struktura = aStruktura;
+    public void setStrukturaElemenata(Element aStrukturaElemenata) {
+        strukturaElemenata = aStrukturaElemenata;
     }
 
 }

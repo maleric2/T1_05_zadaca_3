@@ -56,8 +56,7 @@ public class VT100Application {
             ElementStructure es = new ElementStructure();
             PrintStructure ps = new PrintStructure();
             es.setRootPath(args[3]);
-            System.out.println(es.getKorijenskiElement().toString());
-            ps.printStructure(es.getKorijenskiElement(), es);
+            ps.printStructure(es.getStrukturaElemenata(), es);
 
             /*
              //spremanje mementom
