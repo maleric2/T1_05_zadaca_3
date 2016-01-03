@@ -5,10 +5,13 @@
  */
 package t1_05_zadaca_3.application;
 
+import java.util.List;
 import t1_05_zadaca_3.structure.CareTaker;
 import t1_05_zadaca_3.structure.ElementStructure;
 import t1_05_zadaca_3.structure.Originator;
 import t1_05_zadaca_3.structure.PrintStructure;
+import t1_05_zadaca_3.terminal.IspisO;
+import t1_05_zadaca_3.terminal.ObradaTeksta;
 import t1_05_zadaca_3.windows.WindowFactory;
 
 /**
@@ -58,13 +61,37 @@ public class VT100Application {
             PrintStructure ps = new PrintStructure();
             es.setRootPath(args[3]);
             ps.printStructure(es.getStrukturaElemenata(), es);
+
+            //Ispis u terminal
+            //TODO Makni hardkodiranje
+            int sirina = 80;
+            int visina = 30;
             
+            //ispis okomitog okvira
+            IspisO ispis = new IspisO(visina);
+            ispis.nacrtajGranice(sirina, visina);
+
+            //potrebni stringovi za svaki prozor
+            String tekstZaPrviProzor = "Assure polite his really and others figure though. Day age advantages end sufficient eat expression travelling. Of on am father by agreed supply rather either. Own handsome delicate its property mistress her end appetite. Mean are sons too sold nor said. Son share three men power boy you. Now merits wonder effect garret own. Oh he decisively impression attachment friendship so if everything. Whose her enjoy chief new young. Felicity if ye required likewise so doubtful. On so attention necessary at by provision otherwise existence direction. Unpleasing up announcing unpleasant themselves oh do on. Way advantage age led listening belonging supposing.";
+            String tekstZaDrugiProzor = "Assure polite his really and others figure though. Day age advantages end sufficient eat expression travelling. Of on am father by agreed supply rather either. Own handsome delicate its property mistress her end appetite. Mean are sons too sold nor said. Son share three men power boy you. Now merits wonder effect garret own. Oh he decisively impression attachment friendship so if everything. Whose her enjoy chief new young. Felicity if ye required likewise so doubtful. On so attention necessary at by provision otherwise existence direction. Unpleasing up announcing unpleasant themselves oh do on. Way advantage age led listening belonging supposing.";
+
+            //raskomadam stringove u redove potrebne sirine
+            ObradaTeksta ot = new ObradaTeksta();
+            List<String> redoviPrviProzor = ot.tekstPoRedovima(tekstZaPrviProzor, sirina - 2);
+            List<String> redoviDrugiProzor = ot.tekstPoRedovima(tekstZaDrugiProzor, sirina - 2);
+
+            //ispišem redove u terminalu
+            ispis.ubaciTextGore(redoviPrviProzor, sirina, visina);
+            ispis.ubaciTextGore(redoviPrviProzor, sirina, visina);
+            ispis.ubaciTextDolje(redoviDrugiProzor, sirina, visina);
+            ispis.ubaciTextDolje(redoviDrugiProzor, sirina, visina);
+            ispis.prebaciNaDno(sirina, visina + 1);
+
             //prikaz prozora
             //FRAMEOVI
-            System.out.println("---------------------------------------------\n");
-            WindowFactory ff = new WindowFactory();
-            ff.createWindow(args);
-
+            /*System.out.println("---------------------------------------------\n");
+             WindowFactory ff = new WindowFactory();
+             ff.createWindow(args);*/
             /*
              //spremanje mementom
              izvor.setState(es);
