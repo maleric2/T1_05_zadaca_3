@@ -62,9 +62,13 @@ public class VT100Application {
             es.setRootPath(args[3]);
             ps.printStructure(es.getStrukturaElemenata(), es);
 
+            
             //Ispis u terminal
             //TODO Makni hardkodiranje
-            int sirina = 80;
+            
+            //ODKOMENTIRAJ OVDJE KAKO BI VIDJELI KAKO RADI U TERMINALU. ZAKOMENTIRANO JER NIJE UBACEN ISPIS APLIKACIJE UNUTRA
+            
+            /*int sirina = 80;
             int visina = 30;
             
             //ispis okomitog okvira
@@ -85,7 +89,7 @@ public class VT100Application {
             ispis.ubaciTextGore(redoviPrviProzor, sirina, visina);
             ispis.ubaciTextDolje(redoviDrugiProzor, sirina, visina);
             ispis.ubaciTextDolje(redoviDrugiProzor, sirina, visina);
-            ispis.prebaciNaDno(sirina, visina + 1);
+            ispis.prebaciNaDno(sirina, visina + 1);*/
 
             //prikaz prozora
             //FRAMEOVI
