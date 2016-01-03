@@ -20,6 +20,8 @@ import t1_05_zadaca_3.windows.WindowFactory;
  * @author Marko
  */
 public class VT100Application {
+    
+    private int brojacRazina;
 
     private static VT100Application instance;
 
@@ -60,7 +62,9 @@ public class VT100Application {
             ElementStructure es = new ElementStructure();
             PrintStructure ps = new PrintStructure();
             es.setRootPath(args[3]);
-            ps.printStructure(es.getStrukturaElemenata(), es);
+            es.setLevels(es.getKorijenskiElement(), es, brojacRazina);
+            ps.MenuOption1(es.getDirektoriji(), es.getDatoteke(), es.getVelicinaKorDir());
+            ps.MenuOption2(es.getStrukturaElemenata(), es);
 
             
             //Ispis u terminal

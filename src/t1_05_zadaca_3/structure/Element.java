@@ -22,24 +22,28 @@ public class Element {
     private boolean datoteka;
     private boolean direktorij;
     //ima li korijen ili direktorij djecu, defaultno false za datoteke
-    private boolean imaDjecu;
+    private boolean djeca;
+    private boolean parent;
     private String roditelj;
     private int hashRoditeljskePutanje;
     private int hashPutanjeElementa;
+    private int razina;
 
     private List<Element> elementi;
 
-    public Element(String naziv, String vrijemePromjene, String velicina, String roditelj, int hashRoditelja, int hashNaziva, boolean korijen, boolean datoteka, boolean direktorij, boolean imaDjecu) {
+    public Element(String naziv, String vrijemePromjene, String velicina, String roditelj, int hashRoditelja, int hashNaziva, boolean korijen, boolean datoteka, boolean direktorij, boolean djeca, boolean parent, int razina) {
         this.naziv = naziv;
         this.velicina = velicina;
         this.vrijemePromjene = vrijemePromjene;
         this.korijen = korijen;
         this.direktorij = direktorij;
         this.datoteka = datoteka;
-        this.imaDjecu = imaDjecu;
+        this.djeca = djeca;
         this.roditelj = roditelj;
         this.hashRoditeljskePutanje = hashRoditelja;
         this.hashPutanjeElementa = hashNaziva;
+        this.parent = parent;
+        this.razina = razina;
 
         elementi = new ArrayList<>();
     }
@@ -65,6 +69,11 @@ public class Element {
         return elementi.get(i);
     }
 
+    public Element getElementByHash(ElementStructure es, Element e, int hash) {
+
+        return e;
+    }
+
     /**
      * Override Object metode za prikaz
      *
@@ -80,8 +89,8 @@ public class Element {
         } else if (direktorij) {
             tip = "-> direktorij";
         }
-//        return (naziv + "\t\t" + vrijemePromjene + " " + velicina + " B " + tip + " ->\t Roditelj:" + roditelj + " -> Hash roditelja: " + hashRoditeljskePutanje);
-        return (naziv + " Veličina: " + velicina + " Datum: " + vrijemePromjene + " Hash: " + hashPutanjeElementa + " " + tip + " ->\t Roditelj:" + roditelj + " -> Hash roditelja: " + hashRoditeljskePutanje);
+//        return (naziv + " Veličina: " + velicina + " Datum: " + vrijemePromjene + " Hash: " + hashPutanjeElementa + " " + tip + " ->\t Roditelj:" + roditelj + " -> Hash roditelja: " + hashRoditeljskePutanje);
+        return (naziv + "\t" + vrijemePromjene + "\t" + velicina + " B");
     }
 
     /**
@@ -91,7 +100,7 @@ public class Element {
      */
     public Object kloniranje() {
         Element element;
-        element = new Element(this.naziv, this.vrijemePromjene, this.velicina, this.roditelj, this.hashRoditeljskePutanje, this.hashPutanjeElementa, this.korijen, this.datoteka, this.direktorij, this.imaDjecu);
+        element = new Element(this.naziv, this.vrijemePromjene, this.velicina, this.roditelj, this.hashRoditeljskePutanje, this.hashPutanjeElementa, this.korijen, this.datoteka, this.direktorij, this.djeca, this.parent, this.razina);
         return element;
     }
 
@@ -144,12 +153,12 @@ public class Element {
         this.direktorij = direktorij;
     }
 
-    public boolean isImaDjecu() {
-        return imaDjecu;
+    public boolean hasDjeca() {
+        return djeca;
     }
 
-    public void setImaDjecu(boolean imaDjecu) {
-        this.imaDjecu = imaDjecu;
+    public void setDjeca(boolean djeca) {
+        this.djeca = djeca;
     }
 
     public String getRoditelj() {
@@ -174,6 +183,22 @@ public class Element {
 
     public void setHashNaziva(int hashNaziva) {
         this.hashPutanjeElementa = hashNaziva;
+    }
+
+    public boolean hasParent() {
+        return parent;
+    }
+
+    public void setParent(boolean parent) {
+        this.parent = parent;
+    }
+
+    public int getRazina() {
+        return razina;
+    }
+
+    public void setRazina(int dubina) {
+        this.razina = dubina;
     }
 
 }

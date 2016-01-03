@@ -26,11 +26,13 @@ public class ElementStructure implements Container {
     private static List<Element> direktoriji;
     private static List<Element> datoteke;
 
+    private static String velicinaKorDir;
+
     public ElementStructure() {
         direktoriji = new ArrayList<>();
         datoteke = new ArrayList<>();
         //element u koji spremamo sve ostale uključujući i korijen tako da ne treba raditi s listama
-        strukturaElemenata = new Element(null, null, null, null, 0, 0, false, false, false, true);
+        strukturaElemenata = new Element(null, null, null, null, 0, 0, false, false, false, true, false, -1);
     }
 
     /**
@@ -42,10 +44,7 @@ public class ElementStructure implements Container {
         korijenskaPutanja = path;
 
         createStructure();
-        elementSize(korijenskiDirektorij);
-        System.out.println("Broj kreiranih direktorija: " + brKreiranihDirektorija(direktoriji));
-        System.out.println("Broj kreiranih datoteka: " + brKreiranihDatoteka(datoteke));
-        System.out.println("Veličina cijele strukture: " + elementSize(korijenskiDirektorij) + " B");
+        velicinaKorDir = elementSize(korijenskiDirektorij);
     }
 
     /**
@@ -56,7 +55,7 @@ public class ElementStructure implements Container {
 
         korijenskiDirektorij = new File(korijenskaPutanja);
 
-        korijenskiElement = new Element(korijenskaPutanja, convertDate(korijenskiDirektorij), elementSize(korijenskiDirektorij), korijenskiDirektorij.toString(), generateHash(korijenskaPutanja), generateHash(korijenskaPutanja), true, false, true, true);
+        korijenskiElement = new Element(korijenskaPutanja, convertDate(korijenskiDirektorij), elementSize(korijenskiDirektorij), korijenskiDirektorij.toString(), generateHash(korijenskaPutanja), generateHash(korijenskaPutanja), true, false, true, true, true, 0);
 
         checkFileSystem(korijenskiDirektorij);
 
@@ -109,11 +108,11 @@ public class ElementStructure implements Container {
         for (File file : f.listFiles()) {
             if (file.isFile()) {
                 naziv = file.getName();
-                datoteke.add(new Element(naziv, convertDate(file), elementSize(file), getParentName(file), generateHash(file.getParentFile().getAbsolutePath()), generateHash(file.getAbsolutePath()), false, true, false, false));
+                datoteke.add(new Element(naziv, convertDate(file), elementSize(file), getParentName(file), generateHash(file.getParentFile().getAbsolutePath()), generateHash(file.getAbsolutePath()), false, true, false, false, false, 0));
             } else if (file.isDirectory()) {
                 naziv = file.getName();
                 djeca = checkIfChildren(f);
-                direktoriji.add(new Element(naziv, convertDate(file), elementSize(file), getParentName(file), generateHash(file.getParentFile().getAbsolutePath()), generateHash(file.getAbsolutePath()), false, false, true, djeca));
+                direktoriji.add(new Element(naziv, convertDate(file), elementSize(file), getParentName(file), generateHash(file.getParentFile().getAbsolutePath()), generateHash(file.getAbsolutePath()), false, false, true, djeca, true, 0));
                 checkFileSystem(file);
             }
         }
@@ -237,25 +236,21 @@ public class ElementStructure implements Container {
     }
 
     /**
-     * Metoda vraća broj kreiranih direktorija u strukturi
+     * Metoda koja dodijeljuje razinu elementu u Compositeu
      *
-     * @param direktoriji
-     * @return
+     * @param e
+     * @param es
+     * @param brojacRazina
      */
-    public static int brKreiranihDirektorija(List<Element> direktoriji) {
-        int brDir = direktoriji.size();
-        return brDir;
-    }
-
-    /**
-     * Metoda vraća broj kreiranih datoteka u strukturi
-     *
-     * @param datoteke
-     * @return
-     */
-    public static int brKreiranihDatoteka(List<Element> datoteke) {
-        int brDat = datoteke.size();
-        return brDat;
+    public void setLevels(Element e, ElementStructure es, int brojacRazina) {
+        e.setRazina(brojacRazina);
+        brojacRazina++;
+        for (Element e1 : e.getElementi()) {
+            e1.setRazina(brojacRazina);
+            if (e1.hasDjeca()) {
+                setLevels(e1, es, brojacRazina);
+            }
+        }
     }
 
     @Override
@@ -336,4 +331,11 @@ public class ElementStructure implements Container {
         strukturaElemenata = aStrukturaElemenata;
     }
 
+    public String getVelicinaKorDir() {
+        return velicinaKorDir;
+    }
+
+    public void setVelicinaKorDir(String aVelicinaKorDir) {
+        velicinaKorDir = aVelicinaKorDir;
+    }
 }
