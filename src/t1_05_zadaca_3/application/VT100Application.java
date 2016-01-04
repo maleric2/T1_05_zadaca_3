@@ -11,6 +11,7 @@ import t1_05_zadaca_3.structure.ElementStructure;
 import t1_05_zadaca_3.structure.Originator;
 import t1_05_zadaca_3.structure.PrintStructure;
 import t1_05_zadaca_3.terminal.IspisO;
+import static t1_05_zadaca_3.terminal.IspisO.ANSI_ESC;
 import t1_05_zadaca_3.terminal.ObradaTeksta;
 
 /**
@@ -50,6 +51,8 @@ public class VT100Application {
      */
     public void start(String[] args) {
         //validator
+        System.out.print(ANSI_ESC + "2J");
+        
         ArgumentsValidator validator = new ArgumentsValidator();
         if (!validator.validate(args)) {
             System.out.println(validator.getErrorMsg());
