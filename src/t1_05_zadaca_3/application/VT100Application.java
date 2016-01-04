@@ -12,6 +12,7 @@ import t1_05_zadaca_3.structure.Originator;
 import t1_05_zadaca_3.structure.PrintStructure;
 import t1_05_zadaca_3.terminal.IspisO;
 import static t1_05_zadaca_3.terminal.IspisO.ANSI_ESC;
+import t1_05_zadaca_3.terminal.IspisV;
 import t1_05_zadaca_3.terminal.ObradaTeksta;
 
 /**
@@ -52,7 +53,7 @@ public class VT100Application {
     public void start(String[] args) {
         //validator
         System.out.print(ANSI_ESC + "2J");
-        
+
         ArgumentsValidator validator = new ArgumentsValidator();
         if (!validator.validate(args)) {
             System.out.println(validator.getErrorMsg());
@@ -66,29 +67,47 @@ public class VT100Application {
             es.setRootPath(args[3]);
             es.setLevels(es.getKorijenskiElement(), es, brojacRazina);
 
-            String tekstZaPrviProzor = ps.MenuOption2(es.getStrukturaElemenata(), es);
-            String tekstZaDrugiProzor = ps.MenuOption1(es.getDirektoriji(), es.getDatoteke(), es.getVelicinaKorDir());
+            String tekstZaPrviProzor = ps.MenuOption1(es.getDirektoriji(), es.getDatoteke(), es.getVelicinaKorDir());
+            String tekstZaDrugiProzor = ps.MenuOption2(es.getStrukturaElemenata(), es);
 
             //Ispis u terminal
             //TODO Makni hardkodiranje            
-            int sirina = 80;
+            int sirina = 100;
             int visina = 50;
 
-            //ispis okomitog okvira
-            IspisO ispis = new IspisO(visina);
+            //ispis vertikalnog okvira
+            /*IspisV ispis = new IspisV(visina);
             ispis.nacrtajGranice(sirina, visina);
 
             //raskomadam stringove u redove potrebne sirine
             ObradaTeksta ot = new ObradaTeksta();
-            List<String> redoviPrviProzor = ot.tekstPoRedovima(tekstZaPrviProzor, sirina - 2);
-            List<String> redoviDrugiProzor = ot.tekstPoRedovima(tekstZaDrugiProzor, sirina - 2);
+            //za vertikalne je sirina/2
+            List<String> redoviPrviProzor = ot.tekstPoRedovima(tekstZaPrviProzor, sirina/2, 0);
+            List<String> redoviDrugiProzor = ot.tekstPoRedovima(tekstZaDrugiProzor, sirina/2, 0);
 
             //ispišem redove u terminalu
-            ispis.ubaciTextGore(redoviPrviProzor, sirina, visina);
-            ispis.ubaciTextDolje(redoviDrugiProzor, sirina, visina);
-            ispis.prebaciNaDno(sirina, visina + 1);
+            ispis.ubaciTextLijevo(redoviDrugiProzor, sirina, visina);
+            ispis.ubaciTextDesno(redoviDrugiProzor, sirina, visina);*/
+            
+            //ispis okomitog okvira
+            
+             IspisO ispis = new IspisO(visina);
+             ispis.nacrtajGranice(sirina, visina);
 
-             //spremanje mementom
+             //raskomadam stringove u redove potrebne sirine
+             ObradaTeksta ot = new ObradaTeksta();
+            //za okomite je sirina - 2
+             List<String> redoviPrviProzor = ot.tekstPoRedovima(tekstZaPrviProzor, sirina - 2, 2);
+             List<String> redoviDrugiProzor = ot.tekstPoRedovima(tekstZaDrugiProzor, sirina - 2, 2);
+
+             //ispišem redove u terminalu
+             ispis.ubaciTextGore(redoviPrviProzor, sirina, visina);
+             ispis.ubaciTextDolje(redoviDrugiProzor, sirina, visina);
+             
+             
+            
+            ispis.prebaciNaDno(sirina, visina + 1);
+            //spremanje mementom
             //izvor.setState(es);
             //save.add(izvor.saveStateToMemento());
         }

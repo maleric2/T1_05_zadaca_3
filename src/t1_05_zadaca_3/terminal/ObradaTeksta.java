@@ -1,6 +1,5 @@
 package t1_05_zadaca_3.terminal;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,7 +8,6 @@ import java.util.List;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  *
  * @author Tomislav
@@ -19,7 +17,7 @@ public class ObradaTeksta {
     public ObradaTeksta() {
     }
 
-    public List<String> tekstPoRedovima(String text, int sirina) {
+    public List<String> tekstPoRedovima(String text, int sirina, int okomito) {
         List<String> redovi = new ArrayList<>();
         String lines[] = text.split("\\r?\\n");
 
@@ -27,13 +25,29 @@ public class ObradaTeksta {
             red = red.replace("\n", "").replace("\r", "");
             redovi.add(red);
         }
+        //TODO Vise puta proc kroz provjeruDuzineRedova ako nije iz prve sve kako treba
+        /*while (true) {
+            
+         if (sviRedoviDovoljnoDugi(redovi, sirina)) {
+         break;
+         }
+         }*/
 
-        redovi = provjeraDuzineRedova(sirina, redovi);
-        
+        redovi = provjeraDuzineRedova(sirina, redovi, okomito);
+
         return redovi;
     }
 
-    private List<String> provjeraDuzineRedova(int sirina, List<String> redovi) {
+    private boolean sviRedoviDovoljnoDugi(List<String> redovi, int sirina) {
+        for (String red : redovi) {
+            if (red.length() > sirina - 2) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private List<String> provjeraDuzineRedova(int sirina, List<String> redovi, int okomito) {
         List<String> pomocniRedovi = new ArrayList<>();
         for (String red : redovi) {
             if (red.length() > sirina - 2) {
@@ -46,7 +60,7 @@ public class ObradaTeksta {
                         //kopiranje koda za boju
                         prviDio += Character.toString(red.charAt(i));
                         drugiDio += Character.toString(red.charAt(i));
-                    } else if (i < sirina - 2 + 7) {
+                    } else if (i < sirina - 2 + 5 + okomito) {
                         //kopiranje teksta za popuniti jedan cijeli red
                         prviDio += Character.toString(red.charAt(i));
                         //kopiranje ostatka teksta
