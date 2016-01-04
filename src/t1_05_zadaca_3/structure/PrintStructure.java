@@ -13,6 +13,8 @@ import java.util.List;
  */
 public class PrintStructure {
 
+    private String ispisStrukture;
+
     public PrintStructure() {
 
     }
@@ -28,19 +30,22 @@ public class PrintStructure {
         for (Iterator iter = es.getIterator(); iter.hasNext(e);) {
             Element e1 = (Element) iter.next(e);
             String povlaka = razinaUSpace(e1.getRazina());
-            System.out.println(povlaka + e1.toString());
+            //System.out.println(povlaka + e1.toString());
+            ispisStrukture += povlaka + e1.toString() + "\n";
             if (e1.isDirektorij() && e1.hasDjeca()) {
-                    
+
                 printStructure(e1, es);
             }
 
         }
     }
-    
+
     /**
-     * Metoda koja prebacuje int razinu u broj blankova za ispis razina strukture
+     * Metoda koja prebacuje int razinu u broj blankova za ispis razina
+     * strukture
+     *
      * @param razina
-     * @return 
+     * @return
      */
     public String razinaUSpace(int razina) {
         String space = "";
@@ -49,7 +54,7 @@ public class PrintStructure {
         }
         return space;
     }
-    
+
     /**
      * Metoda vraća broj kreiranih direktorija u strukturi
      *
@@ -73,29 +78,38 @@ public class PrintStructure {
     }
 
     //OPCIJA 1 u izborniku
-
     /**
      * Opcija br.1 u izborniku
+     *
      * @param direktoriji
      * @param datoteke
-     * @param velicinaStrukture 
+     * @param velicinaStrukture
      */
-    public void MenuOption1(List<Element> direktoriji , List<Element> datoteke, String velicinaStrukture) {
-        System.out.println("Menu Option 1:");
-        System.out.println("Broj kreiranih direktorija: " + brKreiranihDirektorija(direktoriji));
-        System.out.println("Broj kreiranih datoteka: " + brKreiranihDatoteka(datoteke));
-        System.out.println("Veličina cijele strukture: " + velicinaStrukture + " B");
-        System.out.println("");
+    public String MenuOption1(List<Element> direktoriji, List<Element> datoteke, String velicinaStrukture) {
+        String vrati = "";
+        /*System.out.println("Menu Option 1:");
+         System.out.println("Broj kreiranih direktorija: " + brKreiranihDirektorija(direktoriji));
+         System.out.println("Broj kreiranih datoteka: " + brKreiranihDatoteka(datoteke));
+         System.out.println("Veličina cijele strukture: " + velicinaStrukture + " B");
+         System.out.println("");*/
+        vrati += "Menu Option 1:"
+                + "\nBroj kreiranih direktorija: " + brKreiranihDirektorija(direktoriji)
+                + "\nBroj kreiranih datoteka: " + brKreiranihDatoteka(datoteke)
+                + "\nVeličina cijele strukture: " + velicinaStrukture + " B";
+        return vrati;
     }
 
     /**
      * Opcija br.2 u izborniku
+     *
      * @param e
-     * @param es 
+     * @param es
      */
-    public void MenuOption2(Element e, ElementStructure es) {
-        System.out.println("Menu Option 2:");
+    public String MenuOption2(Element e, ElementStructure es) {
+        //System.out.println("Menu Option 2:");
+        ispisStrukture = "";
         printStructure(e, es);
         System.out.println("");
+        return ispisStrukture;
     }
 }

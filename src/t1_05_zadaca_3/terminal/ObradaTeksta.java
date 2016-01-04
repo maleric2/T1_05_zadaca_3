@@ -18,27 +18,44 @@ public class ObradaTeksta {
 
     public ObradaTeksta() {
     }
-    
-    public List<String> tekstPoRedovima(String text, int sirina)
-    {
-        List<String> stupci = new ArrayList<>();
-        boolean gotovo = false;
-        for (int i = 0; i < text.length();) {
-            String stupac = "";
-            for (int j = 0 + i; j < sirina + i; j++) {
-                if (j >= text.length()) {
-                    gotovo = true;
-                    break;
 
-                }
-                stupac += Character.toString(text.charAt(j));
-            }
-            stupci.add(stupac);
-            if (gotovo) {
-                break;
-            }
-            i += sirina;
+    public List<String> tekstPoRedovima(String text, int sirina) {
+        List<String> redovi = new ArrayList<>();
+        String lines[] = text.split("\\r?\\n");
+
+        for (String red : lines) {
+            red = red.replace("\n", "").replace("\r", "");
+            redovi.add(red);
         }
-        return stupci;
+
+        redovi = provjeraDuzineRedova(sirina, redovi);
+        
+        return redovi;
+    }
+
+    private List<String> provjeraDuzineRedova(int sirina, List<String> redovi) {
+        List<String> pomocniRedovi = new ArrayList<>();
+        for (String red : redovi) {
+            if (red.length() > sirina - 2) {
+                String prviDio = "";
+                String drugiDio = "";
+                for (int i = 0; i < red.length(); i++) {
+                    if (i < sirina-2) {
+                        prviDio += Character.toString(red.charAt(i));
+                    } else {
+                        drugiDio += Character.toString(red.charAt(i));
+                    }
+                }
+
+                pomocniRedovi.add(prviDio);
+                pomocniRedovi.add(drugiDio);
+                /*redovi.set(brojacRedova, prviDio);
+                 redovi.add(brojacRedova, drugiDio);
+                 brojacRedova++;*/
+            } else {
+                pomocniRedovi.add(red);
+            }
+        }
+        return pomocniRedovi;
     }
 }

@@ -49,7 +49,7 @@ public class IspisO {
         }
         //desno
         for (int i = 1; i <= visina; i++) {
-            prikazi(i, 80, 37, "#");
+            prikazi(i, sirina, 37, "#");
         }
     }
 

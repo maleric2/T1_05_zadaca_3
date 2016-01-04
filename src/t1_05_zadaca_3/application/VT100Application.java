@@ -12,7 +12,6 @@ import t1_05_zadaca_3.structure.Originator;
 import t1_05_zadaca_3.structure.PrintStructure;
 import t1_05_zadaca_3.terminal.IspisO;
 import t1_05_zadaca_3.terminal.ObradaTeksta;
-import t1_05_zadaca_3.windows.WindowFactory;
 
 /**
  * Glavna klasa za VT100 Terminal Singleton
@@ -20,7 +19,7 @@ import t1_05_zadaca_3.windows.WindowFactory;
  * @author Marko
  */
 public class VT100Application {
-    
+
     private int brojacRazina;
 
     private static VT100Application instance;
@@ -63,25 +62,18 @@ public class VT100Application {
             PrintStructure ps = new PrintStructure();
             es.setRootPath(args[3]);
             es.setLevels(es.getKorijenskiElement(), es, brojacRazina);
-            ps.MenuOption1(es.getDirektoriji(), es.getDatoteke(), es.getVelicinaKorDir());
-            ps.MenuOption2(es.getStrukturaElemenata(), es);
 
-            
+            String tekstZaPrviProzor = ps.MenuOption2(es.getStrukturaElemenata(), es);
+            String tekstZaDrugiProzor = ps.MenuOption1(es.getDirektoriji(), es.getDatoteke(), es.getVelicinaKorDir());
+
             //Ispis u terminal
-            //TODO Makni hardkodiranje
-            
-            //ODKOMENTIRAJ OVDJE KAKO BI VIDJELI KAKO RADI U TERMINALU. ZAKOMENTIRANO JER NIJE UBACEN ISPIS APLIKACIJE UNUTRA
-            
-            /*int sirina = 80;
-            int visina = 30;
-            
+            //TODO Makni hardkodiranje            
+            int sirina = 100;
+            int visina = 50;
+
             //ispis okomitog okvira
             IspisO ispis = new IspisO(visina);
             ispis.nacrtajGranice(sirina, visina);
-
-            //potrebni stringovi za svaki prozor
-            String tekstZaPrviProzor = "Assure polite his really and others figure though. Day age advantages end sufficient eat expression travelling. Of on am father by agreed supply rather either. Own handsome delicate its property mistress her end appetite. Mean are sons too sold nor said. Son share three men power boy you. Now merits wonder effect garret own. Oh he decisively impression attachment friendship so if everything. Whose her enjoy chief new young. Felicity if ye required likewise so doubtful. On so attention necessary at by provision otherwise existence direction. Unpleasing up announcing unpleasant themselves oh do on. Way advantage age led listening belonging supposing.";
-            String tekstZaDrugiProzor = "Assure polite his really and others figure though. Day age advantages end sufficient eat expression travelling. Of on am father by agreed supply rather either. Own handsome delicate its property mistress her end appetite. Mean are sons too sold nor said. Son share three men power boy you. Now merits wonder effect garret own. Oh he decisively impression attachment friendship so if everything. Whose her enjoy chief new young. Felicity if ye required likewise so doubtful. On so attention necessary at by provision otherwise existence direction. Unpleasing up announcing unpleasant themselves oh do on. Way advantage age led listening belonging supposing.";
 
             //raskomadam stringove u redove potrebne sirine
             ObradaTeksta ot = new ObradaTeksta();
@@ -90,21 +82,12 @@ public class VT100Application {
 
             //ispišem redove u terminalu
             ispis.ubaciTextGore(redoviPrviProzor, sirina, visina);
-            ispis.ubaciTextGore(redoviPrviProzor, sirina, visina);
             ispis.ubaciTextDolje(redoviDrugiProzor, sirina, visina);
-            ispis.ubaciTextDolje(redoviDrugiProzor, sirina, visina);
-            ispis.prebaciNaDno(sirina, visina + 1);*/
+            ispis.prebaciNaDno(sirina, visina + 1);
 
-            //prikaz prozora
-            //FRAMEOVI
-            /*System.out.println("---------------------------------------------\n");
-             WindowFactory ff = new WindowFactory();
-             ff.createWindow(args);*/
-            /*
              //spremanje mementom
-             izvor.setState(es);
-             save.add(izvor.saveStateToMemento());
-             */
+            //izvor.setState(es);
+            //save.add(izvor.saveStateToMemento());
         }
 
     }

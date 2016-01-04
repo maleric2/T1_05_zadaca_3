@@ -90,7 +90,7 @@ public class Element {
             tip = "-> direktorij";
         }
 //        return (naziv + " Veličina: " + velicina + " Datum: " + vrijemePromjene + " Hash: " + hashPutanjeElementa + " " + tip + " ->\t Roditelj:" + roditelj + " -> Hash roditelja: " + hashRoditeljskePutanje);
-        return (naziv + "\t" + vrijemePromjene + "\t" + velicina + " B");
+        return (naziv + " | " + vrijemePromjene + " | " + velicina + " B");
     }
 
     /**
