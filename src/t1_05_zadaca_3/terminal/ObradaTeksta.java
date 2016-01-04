@@ -39,10 +39,19 @@ public class ObradaTeksta {
             if (red.length() > sirina - 2) {
                 String prviDio = "";
                 String drugiDio = "";
+                //prolaz kroz cijeli string
                 for (int i = 0; i < red.length(); i++) {
-                    if (i < sirina-2) {
+
+                    if (i < 7) {
+                        //kopiranje koda za boju
                         prviDio += Character.toString(red.charAt(i));
+                        drugiDio += Character.toString(red.charAt(i));
+                    } else if (i < sirina - 2 + 7) {
+                        //kopiranje teksta za popuniti jedan cijeli red
+                        prviDio += Character.toString(red.charAt(i));
+                        //kopiranje ostatka teksta
                     } else {
+                        //kopiranje ostatka teksta
                         drugiDio += Character.toString(red.charAt(i));
                     }
                 }

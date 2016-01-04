@@ -71,7 +71,7 @@ public class VT100Application {
 
             //Ispis u terminal
             //TODO Makni hardkodiranje            
-            int sirina = 100;
+            int sirina = 80;
             int visina = 50;
 
             //ispis okomitog okvira
