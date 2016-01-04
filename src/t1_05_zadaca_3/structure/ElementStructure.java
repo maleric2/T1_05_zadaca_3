@@ -74,20 +74,20 @@ public class ElementStructure implements Container {
             }
         }
 
-        //dodavanje direktorija u direktorije ako ih ima
-        for (Element dir1 : direktoriji) {
-            for (Element dir2 : direktoriji) {
-                if (dir1.getHashRoditelja() == dir2.getHashNaziva()) {
-                    dir2.addElement(dir1);
-                }
-            }
-        }
-
         //dodavanje datoteke direktoriju ako ih ima
         for (Element dir : direktoriji) {
             for (Element dat : datoteke) {
                 if (dat.getRoditelj().equalsIgnoreCase(dir.getNaziv()) && dat.getHashRoditelja() == dir.getHashNaziva()) {
                     dir.addElement(dat);
+                }
+            }
+        }
+
+        //dodavanje direktorija u direktorije ako ih ima
+        for (Element dir1 : direktoriji) {
+            for (Element dir2 : direktoriji) {
+                if (dir1.getHashRoditelja() == dir2.getHashNaziva()) {
+                    dir2.addElement(dir1);
                 }
             }
         }
