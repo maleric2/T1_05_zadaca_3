@@ -24,7 +24,7 @@ public class IspisV {
     int sirina;
     int visina;
 
-    public IspisV(int visina) {
+    public IspisV() {
         this.pocetakDrugogOkvira = sirina/2+1;
         //this.donjiKursorY = 2;
     }
