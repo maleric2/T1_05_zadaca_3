@@ -88,6 +88,20 @@ public class VT100Application {
 
             ObradaTeksta ot = new ObradaTeksta();
 
+            if (args[2].equals("O")) {
+                List<String> redoviPrviProzor = ot.tekstPoRedovima(sadrzajStrukture, sirina - 2, 2);
+                List<String> redoviDrugiProzor = ot.tekstPoRedovima(brojDirDat, sirina - 2, 2);
+                ispisO.ubaciTextGore(redoviPrviProzor, sirina, visina);
+                ispisO.ubaciTextDolje(redoviDrugiProzor, sirina, visina);
+                ispisO.prebaciNaDno(sirina, visina + 1);
+            } else if (args[2].equals("V")) {
+                List<String> redoviPrviProzor = ot.tekstPoRedovima(sadrzajStrukture, sirina / 2, 0);
+                List<String> redoviDrugiProzor = ot.tekstPoRedovima(brojDirDat, sirina / 2, 0);
+                ispisV.ubaciTextLijevo(redoviPrviProzor, sirina, visina);
+                ispisV.ubaciTextDesno(redoviDrugiProzor, sirina, visina);
+                ispisV.prebaciNaDno(sirina, visina + 1);
+            }
+
             //početni ispis granica i izbornika
             if (args[2].equals("O")) {
                 ispisO.nacrtajGranice(sirina, visina);
@@ -131,7 +145,8 @@ public class VT100Application {
                         ispisV.ubaciTextLijevo(redoviPrviProzor, sirina, visina);
                         ispisV.prebaciNaDno(sirina, visina + 1);
                     }
-                } else if (odabir == 8) {
+                } else if (odabir == 7) {
+                    //OVO SPREMA POCENO STANJE I ISPISUJE GA OVO JE SAMO TEST MEMENTA
                     //uhvatim pocetno stanje iz mementa
                     izvor.getStateFromMemento(save.get(0));
                     //spremim to stanje u vratiStanje
@@ -152,11 +167,39 @@ public class VT100Application {
                         ispisV.ubaciTextDesno(stariRedovi, sirina, visina);
                         ispisV.prebaciNaDno(sirina, visina + 1);
                     }
+                } else if (odabir == 8) {
+                    //PONOVNO UCITAVANJE STRUKTURE NA ZADANOM DIREKTORIJU
+
+                    ElementStructure es2 = new ElementStructure();
+                    PrintStructure ps2 = new PrintStructure();
+                    es2.setRootPath(args[3]);
+                    es2.setLevels(es2.getKorijenskiElement(), es2, brojacRazina);
+
+                    brojDirDat = ps.MenuOption1(es2.getDirektoriji(), es2.getDatoteke(), es2.getVelicinaKorDir());
+                    sadrzajStrukture = ps.MenuOption2(es2.getStrukturaElemenata(), es2);
+
+                    if (args[2].equals("O")) {
+                        List<String> redoviPrviProzor = ot.tekstPoRedovima(sadrzajStrukture, sirina - 2, 2);
+                        List<String> redoviDrugiProzor = ot.tekstPoRedovima(brojDirDat, sirina - 2, 2);
+                        ispisO.ubaciTextGore(redoviPrviProzor, sirina, visina);
+                        ispisO.ubaciTextDolje(redoviDrugiProzor, sirina, visina);
+                        ispisO.prebaciNaDno(sirina, visina + 1);
+                    } else if (args[2].equals("V")) {
+                        List<String> redoviPrviProzor = ot.tekstPoRedovima(sadrzajStrukture, sirina / 2, 0);
+                        List<String> redoviDrugiProzor = ot.tekstPoRedovima(brojDirDat, sirina / 2, 0);
+                        ispisV.ubaciTextLijevo(redoviPrviProzor, sirina, visina);
+                        ispisV.ubaciTextDesno(redoviDrugiProzor, sirina, visina);
+                        ispisV.prebaciNaDno(sirina, visina + 1);
+                    }
+                    
+                    es = es2;
+                    ps = ps2;
+
                 } else if (odabir == 0) {
                     break;
                 } else {
                     break;
-                
+
                 }
             }
 
