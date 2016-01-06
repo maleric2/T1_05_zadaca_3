@@ -49,7 +49,8 @@ public class MainMenu {
         return menu.toString();
     }
     public String getChoice(){
-        String choice = scanner.next();
+        String choice= scanner.nextLine();
+        //String choice = scanner..next();
         return choice;
     }
     public String readString(){

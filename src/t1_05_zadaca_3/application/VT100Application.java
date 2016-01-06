@@ -144,13 +144,14 @@ public class VT100Application {
                                     ElementStructure structure = memento.getState();
                                     izvor.setState(structure);
                                     drawer.drawWindow1("Novo stanje je postavljeno\n");
+                                    find=true;
                                 }
                             }
                             if(!find)
                                 drawer.drawWindow1("Stanje nije pronadjeno\n");
                         }
                     catch(Exception ex){
-                        System.out.println("Pogrešan parametar: " + ex.getMessage());
+                        System.out.println("Pogrešan parametar "+choice2[1]+"! Message: " + ex.getMessage());
                     }
                         
                         break;
