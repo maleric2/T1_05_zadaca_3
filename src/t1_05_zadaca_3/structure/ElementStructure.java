@@ -27,6 +27,8 @@ public class ElementStructure implements Container {
     private static List<Element> datoteke;
 
     private static String velicinaKorDir;
+    
+    
 
     public ElementStructure() {
         direktoriji = new ArrayList<>();
@@ -35,6 +37,14 @@ public class ElementStructure implements Container {
         strukturaElemenata = new Element(null, null, null, null, 0, 0, false, false, false, true, false, -1);
     }
 
+    /**
+     * Dohvat vrmenea
+     */
+    public String GetDate(){
+        if(korijenskiDirektorij == null)
+            return "";
+        return convertDate(korijenskiDirektorij);
+    }
     /**
      * Postavljanje putanje za korijenski direktorij
      *

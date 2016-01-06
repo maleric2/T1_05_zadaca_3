@@ -98,8 +98,8 @@ public class VT100Application {
                 //drawer.clear();
                 drawer.drawBottom(menu.getMainMenu());
                 choice = menu.getChoice();
-
-                switch (choice) {
+                String[] choice2 = choice.split(" ");
+                switch (choice2[0]) {
                     case "1": {
                         //Prikaze podatke o broju direktorija/datoteka i velicini
                         drawer.drawWindow2(brojDirDat);
@@ -119,11 +119,40 @@ public class VT100Application {
                         break;
                     }
                     case "5": {
-                        //TODO: Ispis informacija o stanjima
+                        //Ispis informacija o svim stanjima (redni broj i vrijeme spremanja)
+                        String printText = " Redni broj\t Datum\n============\t=======\n";
+                        for(int i=0;i<VT100Application.save.vratiVelicinu();i++){
+                            t1_05_zadaca_3.structure.Memento memento = VT100Application.save.get(i);
+                            ElementStructure structure = memento.getState();
+                            String date = structure.GetDate();
+                            printText+= "\t"+i+"\t"+date+"\n";
+                        }
+                        drawer.drawWindow1(printText);
                         break;
                     }
                     case "6": {
-                        //TODO: 
+                        //postavljanje stanja strukture na promjenu s rednim brojem n
+                        int setNewState;
+                        try{
+                            setNewState = Integer.parseInt(choice2[1]);
+                            drawer.drawWindow1("Tražim stanje...\n");
+                            boolean find=false;
+                            for(int i=0;i<VT100Application.save.vratiVelicinu();i++){
+                                if(setNewState==i){
+                                    drawer.drawWindow1("Proasao sam stanje "+setNewState+"\n");
+                                    t1_05_zadaca_3.structure.Memento memento = VT100Application.save.get(i);
+                                    ElementStructure structure = memento.getState();
+                                    izvor.setState(structure);
+                                    drawer.drawWindow1("Novo stanje je postavljeno\n");
+                                }
+                            }
+                            if(!find)
+                                drawer.drawWindow1("Stanje nije pronadjeno\n");
+                        }
+                    catch(Exception ex){
+                        System.out.println("Pogrešan parametar: " + ex.getMessage());
+                    }
+                        
                         break;
                     }
                     case "7": {
