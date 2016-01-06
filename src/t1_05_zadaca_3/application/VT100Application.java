@@ -15,6 +15,7 @@ import t1_05_zadaca_3.structure.CareTaker;
 import t1_05_zadaca_3.structure.ElementStructure;
 import t1_05_zadaca_3.structure.Originator;
 import t1_05_zadaca_3.structure.PrintStructure;
+import t1_05_zadaca_3.terminal.Drawer;
 import t1_05_zadaca_3.terminal.IspisO;
 import static t1_05_zadaca_3.terminal.IspisO.ANSI_ESC;
 import t1_05_zadaca_3.terminal.IspisV;
@@ -83,82 +84,49 @@ public class VT100Application {
             int sirina = Integer.parseInt(args[1]);
             int visina = Integer.parseInt(args[0]);
 
-            //TODO Ne deklarirat i inicijalizirat oboje
-            IspisO ispisO = new IspisO(visina);
-            IspisV ispisV = new IspisV();
+            //TODO: dodatno reorganizirat zbog MVC-a:
+            //Model = ElementStructure
+            //View -Drawer ili DrawerUI - razdvojiti na 3 View-a - BottomView, Window1View, Window2View
+            //Controller - ovo - prebacit dio logike u novu klasu ElementController(model, view);
+            
+            MainMenu menu = MainMenu.getInstance();
+            String choice = "";
+            Drawer drawer = new Drawer(args[2], sirina, visina);
+            drawer.drawWindow1(sadrzajStrukture);
+            drawer.drawWindow2(brojDirDat);
+            do {
+                //drawer.clear();
+                drawer.drawBottom(menu.getMainMenu());
+                choice = menu.getChoice();
 
-            ObradaTeksta ot = new ObradaTeksta();
-
-            if (args[2].equals("O")) {
-                List<String> redoviPrviProzor = ot.tekstPoRedovima(sadrzajStrukture, sirina - 2, 2);
-                List<String> redoviDrugiProzor = ot.tekstPoRedovima(brojDirDat, sirina - 2, 2);
-                ispisO.ubaciTextGore(redoviPrviProzor, sirina, visina);
-                ispisO.ubaciTextDolje(redoviDrugiProzor, sirina, visina);
-                ispisO.prebaciNaDno(sirina, visina + 1);
-            } else if (args[2].equals("V")) {
-                List<String> redoviPrviProzor = ot.tekstPoRedovima(sadrzajStrukture, sirina / 2, 0);
-                List<String> redoviDrugiProzor = ot.tekstPoRedovima(brojDirDat, sirina / 2, 0);
-                ispisV.ubaciTextLijevo(redoviPrviProzor, sirina, visina);
-                ispisV.ubaciTextDesno(redoviDrugiProzor, sirina, visina);
-                ispisV.prebaciNaDno(sirina, visina + 1);
-            }
-
-            //početni ispis granica i izbornika
-            if (args[2].equals("O")) {
-                ispisO.nacrtajGranice(sirina, visina);
-                ispisO.prebaciNaDno(sirina, visina + 1);
-            } else if (args[2].equals("V")) {
-                ispisV.nacrtajGranice(sirina, visina);
-                ispisV.prebaciNaDno(sirina, visina + 1);
-            }
-
-            int odabir = 0;
-            while (true) {
-                BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-                try {
-                    odabir = Integer.parseInt(br.readLine());
-                } catch (IOException ex) {
-                    Logger.getLogger(VT100Application.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                if (odabir == 1) {
-                    if (args[2].equals("O")) {
-                        //raskomadam stringove u redove potrebne sirine
-                        //za okomite je sirina - 2
-                        List<String> redoviPrviProzor = ot.tekstPoRedovima(brojDirDat, sirina - 2, 2);
-                        ispisO.ubaciTextGore(redoviPrviProzor, sirina, visina);
-                        ispisO.prebaciNaDno(sirina, visina + 1);
-                    } else if (args[2].equals("V")) {
-                        //za vertikalne je sirina/2
-                        List<String> redoviPrviProzor = ot.tekstPoRedovima(brojDirDat, sirina / 2, 0);
-                        ispisV.ubaciTextLijevo(redoviPrviProzor, sirina, visina);
-                        ispisV.prebaciNaDno(sirina, visina + 1);
+                switch (choice) {
+                    case "1": {
+                        //Prikaze podatke o broju direktorija/datoteka i velicini
+                        drawer.drawWindow2(brojDirDat);
+                        break;
                     }
-                } else if (odabir == 2) {
-                    if (args[2].equals("O")) {
-                        //raskomadam stringove u redove potrebne sirine;
-                        //za okomite je sirina - 2
-                        List<String> redoviDrugiProzor = ot.tekstPoRedovima(sadrzajStrukture, sirina - 2, 2);
-                        ispisO.ubaciTextGore(redoviDrugiProzor, sirina, visina);
-                        //ispisO.ubaciTextGore(redoviDrugiProzor, sirina, visina);
-                        ispisO.prebaciNaDno(sirina, visina + 1);
-                    } else if (args[2].equals("V")) {
-                        List<String> redoviPrviProzor = ot.tekstPoRedovima(sadrzajStrukture, sirina / 2, 0);
-                        ispisV.ubaciTextLijevo(redoviPrviProzor, sirina, visina);
-                        ispisV.prebaciNaDno(sirina, visina + 1);
+                    case "2": {
+                        //Prikaze podatke o sadrzaju direktorija
+                        drawer.drawWindow1(sadrzajStrukture);
+                        break;
                     }
-                } else if (odabir == 3) {
-                    if (args[2].equals("O")) {
-                        //raskomadam stringove u redove potrebne sirine
-                        //za okomite je sirina - 2
-//                        List<String> redoviPrviProzor = ot.tekstPoRedovima(brojDirDat, sirina - 2, 2);
-//                        ispisO.ubaciTextGore(redoviPrviProzor, sirina, visina);
-//                        ispisO.prebaciNaDno(sirina, visina + 1);
-                    } else if (args[2].equals("V")) {
-                        //za vertikalne je sirina/2
-//                        List<String> redoviPrviProzor = ot.tekstPoRedovima(brojDirDat, sirina / 2, 0);
-//                        ispisV.ubaciTextLijevo(redoviPrviProzor, sirina, visina);
-//                        ispisV.prebaciNaDno(sirina, visina + 1);
-                    } else if (odabir == 7) {
+                    case "3": {
+                        //TODO: Izvrsavanje dretve
+                        break;
+                    }
+                    case "4": {
+                        //TODO: Prekid izvrsavanja dretve
+                        break;
+                    }
+                    case "5": {
+                        //TODO: Ispis informacija o stanjima
+                        break;
+                    }
+                    case "6": {
+                        //TODO: 
+                        break;
+                    }
+                    case "7": {
                         //OVO SPREMA POCENO STANJE I ISPISUJE GA OVO JE SAMO TEST MEMENTA
                         //uhvatim pocetno stanje iz mementa
                         izvor.getStateFromMemento(save.get(0));
@@ -170,18 +138,11 @@ public class VT100Application {
 
                         //ispis strukture koja je vraćena
                         String staroStanje = ps.MenuOption2(vratiStanje.getStrukturaElemenata(), vratiStanje);
-                        if (args[2].equals("O")) {
-                            List<String> stariRedovi = ot.tekstPoRedovima(staroStanje, sirina - 2, 2);
-                            //TODO ubačeno od jedan od okvira samo za provjeru
-                            ispisO.ubaciTextDolje(stariRedovi, sirina, visina);
-                            ispisO.prebaciNaDno(sirina, visina + 1);
-                        } else if (args[2].equals("V")) {
-                            List<String> stariRedovi = ot.tekstPoRedovima(staroStanje, sirina / 2, 0);
-                            ispisV.ubaciTextDesno(stariRedovi, sirina, visina);
-                            ispisV.prebaciNaDno(sirina, visina + 1);
-                        }
-                    } else if (odabir == 8) {
-                        //PONOVNO UCITAVANJE STRUKTURE NA ZADANOM DIREKTORIJU
+                        drawer.drawWindow2(staroStanje);
+                        break;
+                    }
+                    case "8": {
+                        //PONOVNO UCITAVANJE STRUKTURE NA ZADANOM DIREKTORIJU (učivata ponovno direktorij)
 
                         ElementStructure es2 = new ElementStructure();
                         PrintStructure ps2 = new PrintStructure();
@@ -191,36 +152,24 @@ public class VT100Application {
                         brojDirDat = ps.MenuOption1(es2.getDirektoriji(), es2.getDatoteke(), es2.getVelicinaKorDir());
                         sadrzajStrukture = ps.MenuOption2(es2.getStrukturaElemenata(), es2);
 
-                        if (args[2].equals("O")) {
-                            List<String> redoviPrviProzor = ot.tekstPoRedovima(sadrzajStrukture, sirina - 2, 2);
-                            List<String> redoviDrugiProzor = ot.tekstPoRedovima(brojDirDat, sirina - 2, 2);
-                            ispisO.ubaciTextGore(redoviPrviProzor, sirina, visina);
-                            ispisO.ubaciTextDolje(redoviDrugiProzor, sirina, visina);
-                            ispisO.prebaciNaDno(sirina, visina + 1);
-                        } else if (args[2].equals("V")) {
-                            List<String> redoviPrviProzor = ot.tekstPoRedovima(sadrzajStrukture, sirina / 2, 0);
-                            List<String> redoviDrugiProzor = ot.tekstPoRedovima(brojDirDat, sirina / 2, 0);
-                            ispisV.ubaciTextLijevo(redoviPrviProzor, sirina, visina);
-                            ispisV.ubaciTextDesno(redoviDrugiProzor, sirina, visina);
-                            ispisV.prebaciNaDno(sirina, visina + 1);
-                        }
+                        drawer.drawWindow1(sadrzajStrukture);
+                        drawer.drawWindow2(brojDirDat);
+
                         es = es2;
                         ps = ps2;
-
-                    } else if (odabir == 0) {
+                        
                         break;
-                    } else {
-                        break;
-
                     }
                 }
 
-            }
-            //DRETVA
-            CheckStructureThread cs = new CheckStructureThread(es.getKorijenskiDirektorij(), es.getDirektoriji(), es.getDatoteke());
-            cs.setIntervalUSec(10); //args[4]
-            cs.setIzvrsavanje(true); //varijabla za start i stop dretve 
-            cs.startThread();
+            } while (!choice.equals("Q"));
+
+              
+            /*//DRETVA
+             CheckStructureThread cs = new CheckStructureThread(es.getKorijenskiDirektorij(), es.getDirektoriji(), es.getDatoteke());
+             cs.setIntervalUSec(10); //args[4]
+             cs.setIzvrsavanje(true); //varijabla za start i stop dretve 
+             cs.startThread();*/
         }
     }
 }
