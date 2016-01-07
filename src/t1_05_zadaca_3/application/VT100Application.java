@@ -177,7 +177,9 @@ public class VT100Application {
                                         drawer.drawWindow1("Dohvaćeno stanje sa rednim brojem + " + redniBroj + "\n");
                                         find = true;
                                         
-                                        //TODO Usporedi dohvaćeno stanje structure sa trenutnim stanjem es
+                                        //TODO Usporedi dohvaćeno stanje structure sa trenutnim stanjem es                    
+                                        drawer.drawWindow1(structure.usporedbaStrukture(structure.getSviElementi(), es.getSviElementi()));
+                                        
                                     }
                                 }
                                 if (!find) {
