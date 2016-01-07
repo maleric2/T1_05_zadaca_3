@@ -207,13 +207,62 @@ public class VT100Application {
                     }
                     case "9": {
                         //Layers
+                        //TODO: s visitorom dohvatiti sve elemente u listu u Layer0Main
                         Layer0Main l0 = new Layer0Main(args);
-                        l0.setElement(new Element("test_folder", "", "", "", 0, 0, false, false, true, false, false, 0));
-                        l0.setLayer();
-                        drawer.drawWindow1(l0.ispisiKreiranje());
-                        
-                        //TODO: procitati elemente iz strukture i prema indeksu odabrati jedan za kreiranje
+//                        String s = "";
+//                        for (int i = 0; i < es.getSviElementi().size(); i++) {
+//                            s += " " + i;
+//                        }
+//                        drawer.drawWindow2(s);// ima ih 18
 
+                        if (choice2.length < 2) {
+                            int i = 0;
+                            String s = "Za opciju 9 potrebno je unijeti redni broj elementa za kreiranje uz 9\n"
+                                    + "Odaberite jedan od elemenata:\n";
+                            for (Element e : es.getSviElementi()) {
+                                s += i + " " + e.toString() + "\n";
+                                i++;
+                            }
+                            drawer.drawWindow1(s);
+                        } else {
+                            int redniBroj;
+                            try {
+                                redniBroj = Integer.parseInt(choice2[1]);
+                                drawer.drawWindow1("Tražim element...\n");
+                                boolean find = false;
+                                for (int i = 0; i < es.getSviElementi().size(); i++) {
+                                    if (redniBroj == i) {
+                                        drawer.drawWindow1("Pronasao sam element " + redniBroj + "\n");
+                                        Element e = es.getSviElementi().get(i);
+                                        l0.setElement(e);
+                                        l0.setLayer();
+                                        drawer.drawWindow1("Dohvaćen element sa rednim brojem " + redniBroj + "\n");
+                                        find = true;
+
+                                        drawer.drawWindow1(l0.ispisiKreiranje(es));
+
+                                    }
+                                }
+                                if (!find) {
+                                    drawer.drawWindow1("Element nije pronadjen\n");
+                                }
+                            } catch (Exception ex) {
+                                System.out.println("Pogrešan parametar " + choice2[1] + "! Message: " + ex.getMessage());
+                            }
+
+                            
+//                        StructurePart struktura = new ElementStructure();
+//                        struktura.accept(new StructurePartDoVisitor(), es.getKorijenskiElement(), es);
+//                        
+//                        es.accept(new StructurePartDoVisitor(), es.getKorijenskiElement(), es);
+//                        int i = 0;
+//                        String s = "Odaberite broj elementa koji želite pretvoriti u dat/dir:\n";
+//                        for (Element e: es.getSviElementi()) {
+//                            s += i + " " + e.toString() + "\n";
+//                            i++;
+//                        }
+//                        drawer.drawWindow2(s);
+                        }
                         break;
                     }
                 }
