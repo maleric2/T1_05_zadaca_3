@@ -21,7 +21,6 @@ import t1_05_zadaca_3.terminal.IspisO;
 import static t1_05_zadaca_3.terminal.IspisO.ANSI_ESC;
 import t1_05_zadaca_3.terminal.IspisV;
 import t1_05_zadaca_3.terminal.ObradaTeksta;
-import t1_05_zadaca_3.thread.CheckStructureThread;
 import t1_05_zadaca_3.thread.ThreadController;
 
 /**
@@ -90,8 +89,6 @@ public class VT100Application {
             MainMenu menu = MainMenu.getInstance();
             String choice = "";
 
-            CheckStructureThread cs = null;
-
             //prosljedit instancu careTaker-a pa da vrati stanja
             ThreadController tc = new ThreadController(drawer, es, interval);
             controller.updateView();
@@ -114,10 +111,6 @@ public class VT100Application {
                     case "3": {
                         //TODO: Izvrsavanje dretve
                         tc.startThread();
-                        /*if(cs==null) cs = new CheckStructureThread(es.getKorijenskiDirektorij(), es.getDirektoriji(), es.getDatoteke());
-                         cs.setIntervalUSec(10); //args[4]
-                         cs.setIzvrsavanje(true); //varijabla za start i stop dretve 
-                         cs.startThread();*/
                         break;
                     }
                     case "4": {
