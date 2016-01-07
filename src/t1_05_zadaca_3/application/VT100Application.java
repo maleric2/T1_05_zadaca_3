@@ -90,8 +90,8 @@ public class VT100Application {
             MainMenu menu = MainMenu.getInstance();
             String choice = "";
 
-            CheckStructureThread cs=null;
-            
+            CheckStructureThread cs = null;
+
             //prosljedit instancu careTaker-a pa da vrati stanja
             ThreadController tc = new ThreadController(drawer, es, interval);
             controller.updateView();
@@ -115,9 +115,9 @@ public class VT100Application {
                         //TODO: Izvrsavanje dretve
                         tc.startThread();
                         /*if(cs==null) cs = new CheckStructureThread(es.getKorijenskiDirektorij(), es.getDirektoriji(), es.getDatoteke());
-                        cs.setIntervalUSec(10); //args[4]
-                        cs.setIzvrsavanje(true); //varijabla za start i stop dretve 
-                        cs.startThread();*/
+                         cs.setIntervalUSec(10); //args[4]
+                         cs.setIzvrsavanje(true); //varijabla za start i stop dretve 
+                         cs.startThread();*/
                         break;
                     }
                     case "4": {
@@ -168,25 +168,36 @@ public class VT100Application {
                         break;
                     }
                     case "7": {
-                        //OVO SPREMA POCENO STANJE I ISPISUJE GA OVO JE SAMO TEST MEMENTA
-                        //uhvatim pocetno stanje iz mementa
-                        izvor.getStateFromMemento(save.get(0));
-                        //spremim to stanje u vratiStanje
-                        ElementStructure vratiStanje = izvor.getState();
-
-                        //postavljanje strukture na staru
-                        controller.setModel(vratiStanje);
-                        es = vratiStanje;
-
-                        //ispis strukture koja je vraćena
-                        controller.updateViewStructure();
-                        //String staroStanje = ps.MenuOption2(vratiStanje.getStrukturaElemenata(), vratiStanje);
-                        //drawer.drawWindow2(staroStanje);
+                        if (choice2.length < 2) {
+                            drawer.drawWindow1("Za opciju 7 je potrebno unijeti redni broj za usporedbu\n");
+                        } else {
+                            int redniBroj;
+                            try {
+                                redniBroj = Integer.parseInt(choice2[1]);
+                                drawer.drawWindow1("Tražim stanje...\n");
+                                boolean find = false;
+                                for (int i = 0; i < VT100Application.save.vratiVelicinu(); i++) {
+                                    if (redniBroj == i) {
+                                        drawer.drawWindow1("Pronasao sam stanje " + redniBroj + "\n");
+                                        t1_05_zadaca_3.structure.Memento memento = VT100Application.save.get(i);
+                                        ElementStructure structure = memento.getState();
+                                        drawer.drawWindow1("Dohvaćeno stanje sa rednim brojem + " + redniBroj + "\n");
+                                        find = true;
+                                        
+                                        //TODO Usporedi dohvaćeno stanje structure sa trenutnim stanjem es
+                                    }
+                                }
+                                if (!find) {
+                                    drawer.drawWindow1("Stanje nije pronadjeno\n");
+                                }
+                            } catch (Exception ex) {
+                                System.out.println("Pogrešan parametar " + choice2[1] + "! Message: " + ex.getMessage());
+                            }
+                        }
                         break;
                     }
                     case "8": {
-                        //PONOVNO UCITAVANJE STRUKTURE NA ZADANOM DIREKTORIJU (učivata ponovno direktorij)
-
+                        //ponovno učitavanje strukture na zadanom direktoriju
                         ElementStructure es2 = new ElementStructure();
                         PrintStructure ps2 = new PrintStructure();
                         es2.setRootPath(args[3]);
@@ -195,7 +206,6 @@ public class VT100Application {
                         controller.updateView();
                         tc.setModel(es2);
                         es = es2;
-
                         break;
                     }
                 }
