@@ -18,21 +18,22 @@ import java.util.List;
  */
 public class ElementStructure implements Container {
 
-    private static String korijenskaPutanja;
-    private static File korijenskiDirektorij;
-    private static Element korijenskiElement;
-    private static Element strukturaElemenata;
+    private String korijenskaPutanja;
+    private File korijenskiDirektorij;
+    private Element korijenskiElement;
+    private Element strukturaElemenata;
 
-    private static List<Element> direktoriji;
-    private static List<Element> datoteke;
+    private List<Element> direktoriji;
+    private List<Element> datoteke;
 
-    private static String velicinaKorDir;
-    
-    
+    public List<Element> sviElementi;
+
+    private String velicinaKorDir;
 
     public ElementStructure() {
         direktoriji = new ArrayList<>();
         datoteke = new ArrayList<>();
+        sviElementi = new ArrayList<>();
         //element u koji spremamo sve ostale uključujući i korijen tako da ne treba raditi s listama
         strukturaElemenata = new Element(null, null, null, null, 0, 0, false, false, false, true, false, -1);
     }
@@ -40,11 +41,13 @@ public class ElementStructure implements Container {
     /**
      * Dohvat vrmenea
      */
-    public String GetDate(){
-        if(korijenskiDirektorij == null)
+    public String GetDate() {
+        if (korijenskiDirektorij == null) {
             return "";
+        }
         return convertDate(korijenskiDirektorij);
     }
+
     /**
      * Postavljanje putanje za korijenski direktorij
      *
@@ -60,8 +63,9 @@ public class ElementStructure implements Container {
     /**
      * Metoda za kreiranje strukture stabla direktorija i datoteka
      */
-    public static void createStructure() {
+    public void createStructure() {
         strukturaElemenata.clearListOfElements();
+        sviElementi.clear();
 
         korijenskiDirektorij = new File(korijenskaPutanja);
 
@@ -111,19 +115,23 @@ public class ElementStructure implements Container {
      *
      * @param f
      */
-    public static void checkFileSystem(File f) {
+    public void checkFileSystem(File f) {
         String naziv = "";
         boolean djeca = false;
 
         for (File file : f.listFiles()) {
             if (file.isFile()) {
                 naziv = file.getName();
-                datoteke.add(new Element(naziv, convertDate(file), elementSize(file), getParentName(file), generateHash(file.getParentFile().getAbsolutePath()), generateHash(file.getAbsolutePath()), false, true, false, false, false, 0));
+                Element novi = new Element(naziv, convertDate(file), elementSize(file), getParentName(file), generateHash(file.getParentFile().getAbsolutePath()), generateHash(file.getAbsolutePath()), false, true, false, false, false, 0);
+                datoteke.add(novi);
+                sviElementi.add(novi);
             } else if (file.isDirectory()) {
                 naziv = file.getName();
                 djeca = checkIfChildren(f);
-                direktoriji.add(new Element(naziv, convertDate(file), elementSize(file), getParentName(file), generateHash(file.getParentFile().getAbsolutePath()), generateHash(file.getAbsolutePath()), false, false, true, djeca, true, 0));
+                Element novi = new Element(naziv, convertDate(file), elementSize(file), getParentName(file), generateHash(file.getParentFile().getAbsolutePath()), generateHash(file.getAbsolutePath()), false, false, true, djeca, true, 0);
+                direktoriji.add(novi);
                 checkFileSystem(file);
+                sviElementi.add(novi);
             }
         }
     }
@@ -135,7 +143,7 @@ public class ElementStructure implements Container {
      * @param roditelj
      * @return
      */
-    public static int generateHash(String roditelj) {
+    public int generateHash(String roditelj) {
         int hash = 19;
         for (int i = 0; i < roditelj.length(); i++) {
             hash = (hash << 15) - hash + roditelj.charAt(i);
@@ -149,7 +157,7 @@ public class ElementStructure implements Container {
      * @param f
      * @return
      */
-    public static String getParentName(File f) {
+    public String getParentName(File f) {
         File dir = new File(f.getParent());
         String s = dir.getName();
         return s;
@@ -161,7 +169,7 @@ public class ElementStructure implements Container {
      * @param f
      * @return
      */
-    public static boolean checkIfChildren(File f) {
+    public boolean checkIfChildren(File f) {
         if (f.list().length > 0) {
             return true;
         } else {
@@ -175,7 +183,7 @@ public class ElementStructure implements Container {
      * @param f
      * @return
      */
-    public static String convertDate(File f) {
+    public String convertDate(File f) {
         long datum = f.lastModified();
         Date date = new Date(datum);
         Format format = new SimpleDateFormat("dd.MM.yyyy. HH:mm:ss");
@@ -189,7 +197,7 @@ public class ElementStructure implements Container {
      * @param f
      * @return veličina elementa
      */
-    public static String elementSize(File f) {
+    public String elementSize(File f) {
         long velicina = 0;
 
         if (f.isDirectory()) {
@@ -209,7 +217,7 @@ public class ElementStructure implements Container {
      * @param directory
      * @return
      */
-    public static long directorySize(File directory) {
+    public long directorySize(File directory) {
         long length = 0;
         for (File file : directory.listFiles()) {
 
@@ -228,7 +236,7 @@ public class ElementStructure implements Container {
      * @param directory
      * @return
      */
-    public static long fileSize(File directory) {
+    public long fileSize(File directory) {
         long length = 0;
         length = directory.length();
         return length;
@@ -240,7 +248,7 @@ public class ElementStructure implements Container {
      * @param broj
      * @return
      */
-    public static String formatiranaVelicina(long broj) {
+    public String formatiranaVelicina(long broj) {
         String velicina = String.format("%,3d", broj);
         return velicina;
     }
@@ -261,6 +269,44 @@ public class ElementStructure implements Container {
                 setLevels(e1, es, brojacRazina);
             }
         }
+    }
+
+    public String usporedbaStrukture(List<Element> noviElementi, List<Element> stariElementi) {
+        StringBuilder poruka = new StringBuilder();
+        poruka.append("Broj elemenata: " + noviElementi.size() + " :  " + stariElementi.size() + "\n");
+        int brojGresaka = 0;
+        //TODO: Dictionary <Element,String> = e:poruka 
+        boolean exists = false;
+        for (Element e : stariElementi) {
+            exists = false;
+            for (Element f : noviElementi) {
+                if (e.getNaziv().equalsIgnoreCase(f.getNaziv()) && e.getHashNaziva() == f.getHashNaziva()) {
+                    //poruka.append("Element -" + e.getNaziv() + "- postoji u datotečnom sustavu\n");
+                    exists = true;
+                }
+            }
+            if (!exists) {
+                poruka.append("Element -" + e.getNaziv() + "- je obrisan\n");
+                brojGresaka++;
+            }
+        }
+        for (Element f : noviElementi) {
+            exists = false;
+            for (Element e : stariElementi) {
+                if (e.getNaziv().equalsIgnoreCase(f.getNaziv()) && e.getHashNaziva() == f.getHashNaziva()) {
+                    exists = true;
+                    break;
+                }
+            }
+            if (!exists) {
+                poruka.append("Element -" + f.getNaziv() + "- je novi element\n");
+                brojGresaka++;
+            }
+        }
+        if(brojGresaka<1)
+            poruka.append("Nema promjena u strukturi");
+        
+        return poruka.toString();
     }
 
     @Override
@@ -347,5 +393,9 @@ public class ElementStructure implements Container {
 
     public void setVelicinaKorDir(String aVelicinaKorDir) {
         velicinaKorDir = aVelicinaKorDir;
+    }
+
+    public List<Element> getSviElementi() {
+        return sviElementi;
     }
 }
