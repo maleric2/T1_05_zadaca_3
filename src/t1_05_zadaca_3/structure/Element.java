@@ -69,11 +69,6 @@ public class Element {
         return elementi.get(i);
     }
 
-    public Element getElementByHash(ElementStructure es, Element e, int hash) {
-
-        return e;
-    }
-
     /**
      * Override Object metode za prikaz
      *

@@ -12,7 +12,9 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import t1_05_zadaca_3.mvc.ElementController;
+import t1_05_zadaca_3.option9.Layer0Main;
 import t1_05_zadaca_3.structure.CareTaker;
+import t1_05_zadaca_3.structure.Element;
 import t1_05_zadaca_3.structure.ElementStructure;
 import t1_05_zadaca_3.structure.Originator;
 import t1_05_zadaca_3.structure.PrintStructure;
@@ -201,6 +203,17 @@ public class VT100Application {
                         controller.updateView();
                         tc.setModel(es2);
                         es = es2;
+                        break;
+                    }
+                    case "9": {
+                        //Layers
+                        Layer0Main l0 = new Layer0Main(args);
+                        l0.setElement(new Element("test_folder", "", "", "", 0, 0, false, false, true, false, false, 0));
+                        l0.setLayer();
+                        drawer.drawWindow1(l0.ispisiKreiranje());
+                        
+                        //TODO: procitati elemente iz strukture i prema indeksu odabrati jedan za kreiranje
+
                         break;
                     }
                 }
