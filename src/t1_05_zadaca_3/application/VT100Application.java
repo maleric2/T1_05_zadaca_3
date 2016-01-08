@@ -19,9 +19,7 @@ import t1_05_zadaca_3.structure.ElementStructure;
 import t1_05_zadaca_3.structure.Originator;
 import t1_05_zadaca_3.structure.PrintStructure;
 import t1_05_zadaca_3.terminal.Drawer;
-import t1_05_zadaca_3.terminal.IspisO;
-import static t1_05_zadaca_3.terminal.IspisO.ANSI_ESC;
-import t1_05_zadaca_3.terminal.IspisV;
+import static t1_05_zadaca_3.terminal.DrawerUI.ANSI_ESC;
 import t1_05_zadaca_3.terminal.ObradaTeksta;
 import t1_05_zadaca_3.thread.ThreadController;
 

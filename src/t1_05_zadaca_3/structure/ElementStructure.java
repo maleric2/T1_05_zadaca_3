@@ -38,7 +38,6 @@ public class ElementStructure implements Container {
         datoteke = new ArrayList<>();
         sviElementi = new ArrayList<>();
         //element u koji spremamo sve ostale uključujući i korijen tako da ne treba raditi s listama
-        strukturaElemenata = new Element(null, null, null, null, 0, 0, false, false, false, true, false, -1);
     }
 
     /**
@@ -67,10 +66,22 @@ public class ElementStructure implements Container {
      * Metoda za kreiranje strukture stabla direktorija i datoteka
      */
     public void createStructure() {
-        strukturaElemenata.clearListOfElements();
+        if(strukturaElemenata!=null){
+            strukturaElemenata.clearListOfElements();
+            strukturaElemenata = new Element(null, null, null, null, 0, 0, false, false, false, true, false, -1);
+        }
+        else{
+            strukturaElemenata = new Element(null, null, null, null, 0, 0, false, false, false, true, false, -1);
+            strukturaElemenata.clearListOfElements();
+        }
+        if(korijenskiElement!=null){
+            korijenskiElement.clearListOfElements();
+        }
+        
         sviElementi.clear();
         datoteke.clear();
         direktoriji.clear();
+        
         
         vrijemeKreiranja = getTimeNow();
 
