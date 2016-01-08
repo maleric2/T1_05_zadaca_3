@@ -6,7 +6,11 @@
 package t1_05_zadaca_3.thread;
 
 import t1_05_zadaca_3.application.MainMenu;
+import static t1_05_zadaca_3.application.VT100Application.izvor;
+import static t1_05_zadaca_3.application.VT100Application.save;
+import t1_05_zadaca_3.structure.CareTaker;
 import t1_05_zadaca_3.structure.ElementStructure;
+import t1_05_zadaca_3.structure.Originator;
 import t1_05_zadaca_3.structure.PrintStructure;
 import t1_05_zadaca_3.terminal.Drawer;
 
@@ -15,54 +19,108 @@ import t1_05_zadaca_3.terminal.Drawer;
  * @author Marko
  */
 public class ThreadController {
+
     private ElementStructure model;
     private Drawer view;
     PrintStructure ps = new PrintStructure();
-    
+    private Originator izvor;
+    private CareTaker save;
+
     CheckingThread thread;
     int interval;
-    public ThreadController(Drawer view, ElementStructure model, int interval){
+
+    public ThreadController(Drawer view, ElementStructure model, int interval) {
         this.view = view;
-        this.model=model;
+        this.model = model;
         this.interval = interval;
     }
-    
-    public void setModel(ElementStructure model){
+
+    //TODO ovo se može izdvojit u posebnu klasu koja čuva stanja
+    public void setSaveSetup(Originator izvor, CareTaker save) {
+        this.save = save;
+        this.izvor = izvor;
+    }
+
+    public int saveState(ElementStructure model) {
+        if (izvor != null && save != null) {
+            izvor.setState(model);
+            save.add(izvor.saveStateToMemento());
+            return save.vratiVelicinu() - 1;
+        } else {
+            return -1;
+        }
+    }
+
+    public void setModel(ElementStructure model) {
         this.model = model;
     }
-    public ElementStructure getModel(){
+
+    public ElementStructure getModel() {
         return model;
     }
-    public void startThread(){
+
+    public void startThread() {
+        updateViewMenu();
+        if (thread != null && thread.isPause()) {
+            thread.setPause(true);
+            thread.interrupt();
+            thread = null;
+        } else if (thread != null && !thread.isPause()) {
+            view.drawWindow1("Thread: Vec je aktivna dretva");
+            updateViewMenu();
+            return;
+        }
         updateThreadView(false);
         thread = new CheckingThread(interval, view, this);
         thread.start();
     }
-    public void pauseThread(){
-        updateThreadView(true);
-        thread.setPause(true);
+
+    public void pauseThread() {
+        if (thread != null) {
+            updateThreadView(true);
+            thread.setPause(true);
+        }else{
+            view.drawWindow1("Dretva ne postoji\n");
+        }
     }
-    private void updateThreadView(boolean pause){
-        if(pause) view.drawWindow1("Thread: Iskljucujem izvrsavanje\n");
-        else view.drawWindow1("Thread: Uključujem izvrsavanje\n");
+
+    private void updateThreadView(boolean pause) {
+        if (pause) {
+            view.drawWindow1("Thread: Iskljucujem izvrsavanje\n");
+        } else {
+            view.drawWindow1("Thread: Uključujem izvrsavanje\n");
+        }
         updateViewMenu(); //Moze i bez
     }
-    public void terminateThread(){
-        if(!thread.isPause())
+
+    public void terminateThread() {
+        if (!thread.isPause()) {
             thread.interrupt();
-        else  view.drawWindow1("Cekam na dretvu..");
+        } else {
+            view.drawWindow1("Cekam na dretvu..");
+        }
     }
-    public void updateView(){
+
+    public void updateView() {
         updateViewStructure();
         updateViewStats();
     }
-    public void updateViewStructure(){
+
+    public void updateViewStructure() {
         view.drawWindow1(ps.MenuOption2(model.getStrukturaElemenata(), model));
     }
-    public void updateViewStats(){
+
+    public void updateViewStats() {
         view.drawWindow2(ps.MenuOption1(model.getDirektoriji(), model.getDatoteke(), model.getVelicinaKorDir()));
     }
-    public void updateViewMenu(){
-        view.drawBottom(MainMenu.getInstance().getMainMenu());
+
+    public void updateViewMenu() {
+        if (thread != null && !thread.isPause()) {
+            view.drawBottomColor2(MainMenu.getInstance().getMainMenu());//zeleno
+        } else if (thread == null) {
+            view.drawBottom(MainMenu.getInstance().getMainMenu());
+        } else {
+            view.drawBottomColor1(MainMenu.getInstance().getMainMenu());//zuto
+        }
     }
 }

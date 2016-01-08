@@ -47,7 +47,9 @@ public abstract class DrawerUI {
     
     public void drawBottom(String text){
         draw(visina+1, 1, 37, text);
-        
+    }
+    public void drawBottom(String text, int boja){
+        draw(visina+1, 1, boja, text);
     }
     protected void draw(int x, int y, int boja, String tekst) {
         setPosition(x, y);
@@ -57,4 +59,5 @@ public abstract class DrawerUI {
     protected void setPosition(int x, int y) {
         System.out.print(ANSI_ESC + x + ";" + y + "f");
     }
+
 }

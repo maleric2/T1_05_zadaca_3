@@ -30,10 +30,13 @@ public class ElementController {
     
     public void updateView(){
         updateViewStructure();
-        updateViewStats();
+        updateViewStatsInWindow1();
     }
     public void updateViewStructure(){
         view.drawWindow1(ps.MenuOption2(model.getStrukturaElemenata(), model));
+    }
+    public void updateViewStatsInWindow1(){
+        view.drawWindow1(ps.MenuOption1(model.getDirektoriji(), model.getDatoteke(), model.getVelicinaKorDir()));
     }
     public void updateViewStats(){
         view.drawWindow2(ps.MenuOption1(model.getDirektoriji(), model.getDatoteke(), model.getVelicinaKorDir()));

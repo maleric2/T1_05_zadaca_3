@@ -11,6 +11,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import t1_05_zadaca_3.thread.ChangesInStructure;
+import t1_05_zadaca_3.thread.ElementChange;
 
 /**
  *
@@ -29,6 +31,7 @@ public class ElementStructure implements Container {
     public List<Element> sviElementi;
 
     private String velicinaKorDir;
+    private String vrijemeKreiranja;
 
     public ElementStructure() {
         direktoriji = new ArrayList<>();
@@ -66,6 +69,10 @@ public class ElementStructure implements Container {
     public void createStructure() {
         strukturaElemenata.clearListOfElements();
         sviElementi.clear();
+        datoteke.clear();
+        direktoriji.clear();
+        
+        vrijemeKreiranja = getTimeNow();
 
         korijenskiDirektorij = new File(korijenskaPutanja);
 
@@ -270,10 +277,28 @@ public class ElementStructure implements Container {
             }
         }
     }
+    public String getTimeNow(){
+        Date date = new Date();
+        Format format = new SimpleDateFormat("dd.MM.yyyy. HH:mm:ss");
 
+        return format.format(date);
+    }
+
+    //TODO dovršiti
+    //razdvojtii na više klasa Provjera i sl.
+    //vratiti ElementStructure - dodati mu promjene i novu strukturu samo ako je bilo promjena -> al to unutar dretve
     public String usporedbaStrukture(List<Element> noviElementi, List<Element> stariElementi) {
         StringBuilder poruka = new StringBuilder();
-        poruka.append("Broj elemenata: " + noviElementi.size() + " :  " + stariElementi.size() + "\n");
+        ChangesInStructure cs = usporedbaStruktureElemenata(noviElementi,stariElementi);
+        return cs.getChangesInElements();
+    }
+    
+    public ChangesInStructure usporedbaStruktureElemenata(List<Element> noviElementi, List<Element> stariElementi){
+        List<ElementChange> changes = new ArrayList<>();
+        changes.add(new ElementChange("Element je obrisan"));
+        changes.add(new ElementChange("Element je dodan"));
+        ChangesInStructure cs = new ChangesInStructure(getTimeNow());
+        
         int brojGresaka = 0;
         //TODO: Dictionary <Element,String> = e:poruka 
         boolean exists = false;
@@ -281,12 +306,12 @@ public class ElementStructure implements Container {
             exists = false;
             for (Element f : noviElementi) {
                 if (e.getNaziv().equalsIgnoreCase(f.getNaziv()) && e.getHashNaziva() == f.getHashNaziva()) {
-                    //poruka.append("Element -" + e.getNaziv() + "- postoji u datotečnom sustavu\n");
                     exists = true;
                 }
             }
             if (!exists) {
-                poruka.append("Element -" + e.getNaziv() + "- je obrisan\n");
+                //poruka.append("Element -" + e.getNaziv() + "- je obrisan\n");
+                cs.newElementChange(e, changes.get(0));
                 brojGresaka++;
             }
         }
@@ -299,14 +324,15 @@ public class ElementStructure implements Container {
                 }
             }
             if (!exists) {
-                poruka.append("Element -" + f.getNaziv() + "- je novi element\n");
+                //poruka.append("Element -" + f.getNaziv() + "- je novi element\n");
+                cs.newElementChange(f, changes.get(1));
                 brojGresaka++;
             }
         }
-        if(brojGresaka<1)
-            poruka.append("Nema promjena u strukturi");
+        if(brojGresaka>0)
+            return cs;
+        else return null;
         
-        return poruka.toString();
     }
 
     @Override
@@ -397,5 +423,8 @@ public class ElementStructure implements Container {
 
     public List<Element> getSviElementi() {
         return sviElementi;
+    }
+    public String getVrijemeKreiranja(){
+        return vrijemeKreiranja;
     }
 }

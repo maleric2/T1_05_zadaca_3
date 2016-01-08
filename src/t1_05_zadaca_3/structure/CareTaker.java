@@ -27,4 +27,7 @@ public class CareTaker {
     public int vratiVelicinu() {
         return mementoList.size();
     }
+    public void clear(){
+        mementoList.clear();
+    }
 }

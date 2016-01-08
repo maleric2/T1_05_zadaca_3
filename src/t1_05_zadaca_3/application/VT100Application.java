@@ -91,16 +91,19 @@ public class VT100Application {
 
             //prosljedit instancu careTaker-a pa da vrati stanja
             ThreadController tc = new ThreadController(drawer, es, interval);
-            controller.updateView();
+            tc.setSaveSetup(izvor, save);
+
+            controller.updateViewStructure();
+            controller.updateViewStats();
             do {
                 //drawer.clear();
-                controller.updateViewMenu();
+                tc.updateViewMenu();
                 choice = menu.getChoice();
                 String[] choice2 = choice.split(" ");
                 switch (choice2[0]) {
                     case "1": {
                         //Prikaze podatke o broju direktorija/datoteka i velicini
-                        controller.updateViewStats();
+                        controller.updateViewStatsInWindow1();
                         break;
                     }
                     case "2": {
@@ -125,7 +128,7 @@ public class VT100Application {
                         for (int i = 0; i < VT100Application.save.vratiVelicinu(); i++) {
                             t1_05_zadaca_3.structure.Memento memento = VT100Application.save.get(i);
                             ElementStructure structure = memento.getState();
-                            String date = structure.GetDate();
+                            String date = structure.getVrijemeKreiranja();
                             printText += "\t" + i + "\t" + date + "\n";
                         }
                         drawer.drawWindow1(printText);
@@ -143,10 +146,12 @@ public class VT100Application {
                                 boolean find = false;
                                 for (int i = 0; i < VT100Application.save.vratiVelicinu(); i++) {
                                     if (setNewState == i) {
-                                        drawer.drawWindow1("Proasao sam stanje " + setNewState + "\n");
+                                        drawer.drawWindow1("Pronasao sam stanje " + setNewState + "\n");
                                         t1_05_zadaca_3.structure.Memento memento = VT100Application.save.get(i);
                                         ElementStructure structure = memento.getState();
-                                        izvor.setState(structure);
+                                        izvor.setState(structure); //TODO stanja izdvojit u nekoj strukturi pa da se ovo automatski savea sve
+                                        controller.setModel(structure);
+                                        tc.setModel(structure);
                                         drawer.drawWindow1("Novo stanje je postavljeno\n");
                                         find = true;
                                     }
@@ -176,10 +181,10 @@ public class VT100Application {
                                         ElementStructure structure = memento.getState();
                                         drawer.drawWindow1("Dohvaćeno stanje sa rednim brojem + " + redniBroj + "\n");
                                         find = true;
-                                        
+
                                         //TODO Usporedi dohvaćeno stanje structure sa trenutnim stanjem es                    
                                         drawer.drawWindow1(structure.usporedbaStrukture(structure.getSviElementi(), es.getSviElementi()));
-                                        
+
                                     }
                                 }
                                 if (!find) {
@@ -198,7 +203,11 @@ public class VT100Application {
                         es2.setRootPath(args[3]);
                         es2.setLevels(es2.getKorijenskiElement(), es2, brojacRazina);
                         controller.setModel(es2);
-                        controller.updateView();
+                        controller.updateViewStructure();
+                        controller.updateViewStats();
+                        izvor.setState(es2);
+                        save.clear();
+                        save.add(izvor.saveStateToMemento());
                         tc.setModel(es2);
                         es = es2;
                         break;

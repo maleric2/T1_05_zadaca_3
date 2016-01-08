@@ -31,6 +31,12 @@ public class Drawer {
     public void drawBottom(String text){
         drawer.drawBottom(text);
     }
+    public void drawBottomColor1(String text){
+        drawer.drawBottom(text, 33);
+    }
+    public void drawBottomColor2(String text){
+        drawer.drawBottom(text, 32);
+    }
     /**
      * Text je sadržajStrukture
      * @param text 
