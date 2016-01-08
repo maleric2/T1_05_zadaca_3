@@ -17,8 +17,7 @@ public class T1_05_zadaca_3 {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
-        
+
         VT100Application application = VT100Application.getInstance();
         application.start(args);
     }

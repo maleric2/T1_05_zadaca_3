@@ -8,8 +8,8 @@ package t1_05_zadaca_3.terminal;
 import java.util.List;
 
 /**
- * TODO: Pretvorit sve ovo u View ili u 2 View-a
- * TODO: Model = struktura
+ * 
+ *  Model 
  * @author Marko
  */
 public class Drawer {

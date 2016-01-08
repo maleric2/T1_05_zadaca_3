@@ -28,30 +28,29 @@ public class CheckingThread extends Thread {
 
     @Override
     public void run() {
-
+        int brojacRazina =0;
         while (!pause) {
-            //TODO Logic
-            view.drawWindow1("Thread: Izvrsavam dretvu (interval: " + interval + ")\n");
-            //Load sve datoteke
-            //Load sve direktorije
-            //Check ima li izmjene
-
+            brojacRazina =0;
+            
+            String poruka = "Thread: ";
+            
             provjeraStrukture = new ElementStructure();
             provjeraStrukture.setRootPath(controller.getModel().getKorijenskaPutanja());
+            provjeraStrukture.setLevels(provjeraStrukture.getKorijenskiElement(), provjeraStrukture, brojacRazina);
             ChangesInStructure cs = provjeraStrukture.usporedbaStruktureElemenata(provjeraStrukture.getSviElementi(), controller.getModel().getSviElementi());
             if (cs != null) {
-                //TODO: spremiti postojeće stanje
+                //spremiti postojeće stanje
                 int brojStanja = controller.saveState(provjeraStrukture);
                 if (brojStanja > 0) {
-                    view.drawWindow2("Spremljeno novo stanje: " + brojStanja + "\n");
+                    view.drawWindow2(" Spremljeno novo stanje: " + brojStanja + "\n");
                     controller.setModel(provjeraStrukture);
                 } else {
-                    view.drawWindow2("Problem pri spremanju stanja\n");
+                    view.drawWindow2(poruka + "Problem pri spremanju stanja\n");
                 }
 
                 view.drawWindow2(cs.getChangesInElements());
             } else {
-                view.drawWindow1(provjeraStrukture.getVrijemeKreiranja() + " - nema promjene u strukturi");
+                view.drawWindow1(poruka + provjeraStrukture.getVrijemeKreiranja() + " - nema promjene u strukturi");
             }
             //view.drawWindow1(provjeraStrukture.usporedbaStrukture(provjeraStrukture.getSviElementi(), controller.getModel().getSviElementi()));
             controller.updateViewMenu();

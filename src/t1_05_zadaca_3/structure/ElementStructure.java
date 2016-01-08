@@ -295,9 +295,6 @@ public class ElementStructure implements Container {
         return format.format(date);
     }
 
-    //TODO dovršiti
-    //razdvojtii na više klasa Provjera i sl.
-    //vratiti ElementStructure - dodati mu promjene i novu strukturu samo ako je bilo promjena -> al to unutar dretve
     public String usporedbaStrukture(List<Element> noviElementi, List<Element> stariElementi) {
         StringBuilder poruka = new StringBuilder();
         ChangesInStructure cs = usporedbaStruktureElemenata(noviElementi,stariElementi);
@@ -311,7 +308,7 @@ public class ElementStructure implements Container {
         ChangesInStructure cs = new ChangesInStructure(getTimeNow());
         
         int brojGresaka = 0;
-        //TODO: Dictionary <Element,String> = e:poruka 
+
         boolean exists = false;
         for (Element e : stariElementi) {
             exists = false;

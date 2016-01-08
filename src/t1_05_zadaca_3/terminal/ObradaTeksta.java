@@ -25,13 +25,6 @@ public class ObradaTeksta {
             red = red.replace("\n", "").replace("\r", "");
             redovi.add(red);
         }
-        //TODO Vise puta proc kroz provjeruDuzineRedova ako nije iz prve sve kako treba
-        /*while (true) {
-            
-         if (sviRedoviDovoljnoDugi(redovi, sirina)) {
-         break;
-         }
-         }*/
 
         redovi = provjeraDuzineRedova(sirina, redovi, okomito);
 

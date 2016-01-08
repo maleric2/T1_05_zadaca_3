@@ -9,10 +9,10 @@ import t1_05_zadaca_3.mvc.ElementController;
 import t1_05_zadaca_3.option9.Layer0Main;
 import t1_05_zadaca_3.option9.LayerNameDisplayVisitor;
 import t1_05_zadaca_3.option9.LayerVisitor;
-import t1_05_zadaca_3.structure.CareTaker;
+import t1_05_zadaca_3.structure.ElementStates;
 import t1_05_zadaca_3.structure.Element;
 import t1_05_zadaca_3.structure.ElementStructure;
-import t1_05_zadaca_3.structure.Originator;
+import t1_05_zadaca_3.structure.ElementState;
 import t1_05_zadaca_3.structure.PrintStructure;
 import t1_05_zadaca_3.terminal.Drawer;
 import static t1_05_zadaca_3.terminal.DrawerUI.ANSI_ESC;
@@ -30,8 +30,8 @@ public class VT100Application {
 
     private static VT100Application instance;
 
-    public static Originator izvor = new Originator();
-    public static CareTaker save = new CareTaker();
+    public static ElementState izvor = new ElementState();
+    public static ElementStates save = new ElementStates();
 
     private VT100Application() {
         System.out.println("New VT100 Terminal Application..");
@@ -77,8 +77,6 @@ public class VT100Application {
             int visina = Integer.parseInt(args[0]);
             int interval = Integer.parseInt(args[4]);
 
-            //TODO možda podjelit na 3 drawer-a
-            //Drawer Window1 Window2 i Bottom i kojeg prosljedimo u njega zapisuje
             Drawer drawer = new Drawer(args[2], sirina, visina);
             ElementController controller = new ElementController(es, drawer);
 
@@ -108,12 +106,12 @@ public class VT100Application {
                         break;
                     }
                     case "3": {
-                        //TODO: Izvrsavanje dretve
+                        //Izvrsavanje dretve
                         tc.startThread();
                         break;
                     }
                     case "4": {
-                        //TODO: Prekid izvrsavanja dretve
+                        //Prekid izvrsavanja dretve
                         tc.pauseThread();
                         //cs.setIzvrsavanje(false); //varijabla za start i stop dretve 
                         break;
@@ -122,7 +120,7 @@ public class VT100Application {
                         //Ispis informacija o svim stanjima (redni broj i vrijeme spremanja)
                         String printText = " Redni broj\t Datum\n============\t=======\n";
                         for (int i = 0; i < VT100Application.save.vratiVelicinu(); i++) {
-                            t1_05_zadaca_3.structure.Memento memento = VT100Application.save.get(i);
+                            t1_05_zadaca_3.structure.ElementMemento memento = VT100Application.save.get(i);
                             ElementStructure structure = memento.getState();
                             String date = structure.getVrijemeKreiranja();
                             printText += "\t" + i + "\t" + date + "\n";
@@ -143,9 +141,9 @@ public class VT100Application {
                                 for (int i = 0; i < VT100Application.save.vratiVelicinu(); i++) {
                                     if (setNewState == i) {
                                         drawer.drawWindow1("Pronasao sam stanje " + setNewState + "\n");
-                                        t1_05_zadaca_3.structure.Memento memento = VT100Application.save.get(i);
+                                        t1_05_zadaca_3.structure.ElementMemento memento = VT100Application.save.get(i);
                                         ElementStructure structure = memento.getState();
-                                        izvor.setState(structure); //TODO stanja izdvojit u nekoj strukturi pa da se ovo automatski savea sve
+                                        izvor.setState(structure);
                                         controller.setModel(structure);
                                         tc.setModel(structure);
                                         drawer.drawWindow1("Novo stanje je postavljeno\n");
@@ -173,12 +171,12 @@ public class VT100Application {
                                 for (int i = 0; i < VT100Application.save.vratiVelicinu(); i++) {
                                     if (redniBroj == i) {
                                         drawer.drawWindow1("Pronasao sam stanje " + redniBroj + "\n");
-                                        t1_05_zadaca_3.structure.Memento memento = VT100Application.save.get(i);
+                                        t1_05_zadaca_3.structure.ElementMemento memento = VT100Application.save.get(i);
                                         ElementStructure structure = memento.getState();
                                         drawer.drawWindow1("Dohvaćeno stanje sa rednim brojem + " + redniBroj + "\n");
                                         find = true;
 
-                                        //TODO Usporedi dohvaćeno stanje structure sa trenutnim stanjem es                    
+                                        //Usporedi dohvaćeno stanje structure sa trenutnim stanjem es                    
                                         drawer.drawWindow1(structure.usporedbaStrukture(structure.getSviElementi(), es.getSviElementi()));
 
                                     }

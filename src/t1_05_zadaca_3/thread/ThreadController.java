@@ -6,9 +6,9 @@
 package t1_05_zadaca_3.thread;
 
 import t1_05_zadaca_3.application.MainMenu;
-import t1_05_zadaca_3.structure.CareTaker;
+import t1_05_zadaca_3.structure.ElementStates;
 import t1_05_zadaca_3.structure.ElementStructure;
-import t1_05_zadaca_3.structure.Originator;
+import t1_05_zadaca_3.structure.ElementState;
 import t1_05_zadaca_3.structure.PrintStructure;
 import t1_05_zadaca_3.terminal.Drawer;
 
@@ -21,8 +21,8 @@ public class ThreadController {
     private ElementStructure model;
     private Drawer view;
     PrintStructure ps = new PrintStructure();
-    private Originator izvor;
-    private CareTaker save;
+    private ElementState izvor;
+    private ElementStates save;
 
     CheckingThread thread;
     int interval;
@@ -33,8 +33,7 @@ public class ThreadController {
         this.interval = interval;
     }
 
-    //TODO ovo se može izdvojit u posebnu klasu koja čuva stanja
-    public void setSaveSetup(Originator izvor, CareTaker save) {
+    public void setSaveSetup(ElementState izvor, ElementStates save) {
         this.save = save;
         this.izvor = izvor;
     }

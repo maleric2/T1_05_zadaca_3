@@ -16,7 +16,6 @@ import t1_05_zadaca_3.structure.ElementStructure;
  * @author Filip
  */
 public class Layer0Main {
-    //TODO:
     //Element se proslijeđuje iz ElementStructure
 
     private Element element;
