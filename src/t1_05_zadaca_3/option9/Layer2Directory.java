@@ -17,8 +17,10 @@ public class Layer2Directory implements LayerInterface {
 
     private Element e;
     private String putanja;
+    private LayerVisitor visitor;
 
-    public Layer2Directory(Element e, String putanja) {
+    public Layer2Directory(Element e, String putanja, LayerVisitor visitorLayer2) {
+        this.visitor = visitorLayer2;
         this.e = e;
         this.putanja = putanja;
     }
@@ -39,9 +41,9 @@ public class Layer2Directory implements LayerInterface {
     @Override
     public String ispis() {
         if (create()) {
-            return "Kreiran je direktorij " + e.getNaziv() + ": u layeru Layer2Directory";
+            return visitor.visit(this) + "Kreiran je direktorij " + e.getNaziv() + ": u Layer2Directory\n";
         } else {
-            return "Element nije direktorij";
+            return visitor.visit(this) + "Element nije direktorij\n";
         }
     }
 }

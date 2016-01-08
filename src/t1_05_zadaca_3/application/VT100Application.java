@@ -5,14 +5,10 @@
  */
 package t1_05_zadaca_3.application;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import t1_05_zadaca_3.mvc.ElementController;
 import t1_05_zadaca_3.option9.Layer0Main;
+import t1_05_zadaca_3.option9.LayerNameDisplayVisitor;
+import t1_05_zadaca_3.option9.LayerVisitor;
 import t1_05_zadaca_3.structure.CareTaker;
 import t1_05_zadaca_3.structure.Element;
 import t1_05_zadaca_3.structure.ElementStructure;
@@ -213,14 +209,9 @@ public class VT100Application {
                         break;
                     }
                     case "9": {
-                        //Layers
-                        //TODO: s visitorom dohvatiti sve elemente u listu u Layer0Main
-                        Layer0Main l0 = new Layer0Main(args);
-//                        String s = "";
-//                        for (int i = 0; i < es.getSviElementi().size(); i++) {
-//                            s += " " + i;
-//                        }
-//                        drawer.drawWindow2(s);// ima ih 18
+                        //kreiranje novih dir i dat prema elementima u strukturi
+                        LayerVisitor layerVisitor = new LayerNameDisplayVisitor();
+                        Layer0Main l0 = new Layer0Main(args, layerVisitor);
 
                         if (choice2.length < 2) {
                             int i = 0;
@@ -235,11 +226,11 @@ public class VT100Application {
                             int redniBroj;
                             try {
                                 redniBroj = Integer.parseInt(choice2[1]);
-                                drawer.drawWindow1("Tražim element...\n");
+                                drawer.drawWindow1("\nTražim element...\n");
                                 boolean find = false;
                                 for (int i = 0; i < es.getSviElementi().size(); i++) {
                                     if (redniBroj == i) {
-                                        drawer.drawWindow1("Pronasao sam element " + redniBroj + "\n");
+                                        drawer.drawWindow1("Pronađen element " + redniBroj + "\n");
                                         Element e = es.getSviElementi().get(i);
                                         l0.setElement(e);
                                         l0.setLayer();
@@ -251,24 +242,11 @@ public class VT100Application {
                                     }
                                 }
                                 if (!find) {
-                                    drawer.drawWindow1("Element nije pronadjen\n");
+                                    drawer.drawWindow1("Element nije pronađen\n");
                                 }
                             } catch (Exception ex) {
                                 System.out.println("Pogrešan parametar " + choice2[1] + "! Message: " + ex.getMessage());
                             }
-
-                            
-//                        StructurePart struktura = new ElementStructure();
-//                        struktura.accept(new StructurePartDoVisitor(), es.getKorijenskiElement(), es);
-//                        
-//                        es.accept(new StructurePartDoVisitor(), es.getKorijenskiElement(), es);
-//                        int i = 0;
-//                        String s = "Odaberite broj elementa koji želite pretvoriti u dat/dir:\n";
-//                        for (Element e: es.getSviElementi()) {
-//                            s += i + " " + e.toString() + "\n";
-//                            i++;
-//                        }
-//                        drawer.drawWindow2(s);
                         }
                         break;
                     }

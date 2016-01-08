@@ -24,10 +24,13 @@ public class Layer0Main {
     private String putanjaDoKorijena;
     private String folderOpcija9;
     private String opcija9Path;
+    
+    private LayerVisitor visitor;
 
     private List<Element> sviElementi;
 
-    public Layer0Main(String[] args) {
+    public Layer0Main(String[] args, LayerVisitor visitorLayer0) {
+        this.visitor = visitorLayer0;
         sviElementi = new ArrayList<>();
         putanjaDoKorijena = args[3];
         opcija9Path = putanjaDoKorijena + "\\opcija9"; // C:\UzDiz\test\opcija9
@@ -39,17 +42,17 @@ public class Layer0Main {
     }
 
     public void setLayer() {
-        this.layerInterface = new Layer1File(element, folderOpcija9);
+        this.layerInterface = new Layer1File(element, folderOpcija9, new LayerNameDisplayVisitor() );
     }
 
     public String ispisiKreiranje(ElementStructure es) {
         sviElementi.clear();
-        String izlaz = "";
+        String izlaz = visitor.visit(this);
 
         sviElementi = es.getSviElementi();
 
         if (element.isDirektorij()) {
-            this.layerInterface = new Layer2Directory(element, folderOpcija9);
+            this.layerInterface = new Layer2Directory(element, folderOpcija9, new LayerNameDisplayVisitor());
         }
 
         File opcija9 = new File(opcija9Path);
@@ -63,7 +66,4 @@ public class Layer0Main {
         return izlaz;
     }
 
-    public int vratiVelicinu() {
-        return sviElementi.size();
-    }
 }

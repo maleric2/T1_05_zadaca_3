@@ -5,7 +5,6 @@
  */
 package t1_05_zadaca_3.application;
 
-import java.io.File;
 import java.util.Scanner;
 
 /**
