@@ -15,16 +15,16 @@ public class LayerNameDisplayVisitor implements LayerVisitor {
     
     @Override
     public String visit(Layer1File layer1) {
-        return ANSI_ESC + "32m" + "Visitor Layer-a 1.\n";
+        return ANSI_ESC + "31m" + "Visitor Layer-a 1: ";
     }
 
     @Override
     public String visit(Layer2Directory layer2) {
-        return ANSI_ESC + "31m" + "Visitor Layer-a 2.\n";
+        return ANSI_ESC + "32m" + "Visitor Layer-a 2: ";
     }
 
     @Override
     public String visit(Layer0Main layer0) {
-        return ANSI_ESC + "35m" + "Visitor Layer-a 0 -GLAVNI LAYER-.\n";
+        return ANSI_ESC + "35m" + "Visitor Layer-a 0 -GLAVNI LAYER- prosljedjuje zahtjev:\n";
     }
 }

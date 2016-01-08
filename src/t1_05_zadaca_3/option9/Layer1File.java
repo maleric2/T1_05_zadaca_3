@@ -50,9 +50,9 @@ public class Layer1File implements LayerInterface {
     public String ispis() {
         
         if (create()) {
-            return visitor.visit(this) + "Kreirana je datoteka " + e.getNaziv() + ": u Layer1File";
+            return visitor.visit(this) + "Kreirana je datoteka " + e.getNaziv() + ": u Layer1File\n";
         } else {
-           return visitor.visit(this) + "Element nije datoteka";
+           return visitor.visit(this) + "Element nije datoteka\n";
         }
 
     }

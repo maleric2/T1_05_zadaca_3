@@ -225,11 +225,11 @@ public class VT100Application {
                             int redniBroj;
                             try {
                                 redniBroj = Integer.parseInt(choice2[1]);
-                                drawer.drawWindow1("Tražim element...\n");
+                                drawer.drawWindow1("\nTražim element...\n");
                                 boolean find = false;
                                 for (int i = 0; i < es.getSviElementi().size(); i++) {
                                     if (redniBroj == i) {
-                                        drawer.drawWindow1("Pronasao sam element " + redniBroj + "\n");
+                                        drawer.drawWindow1("Pronađen element " + redniBroj + "\n");
                                         Element e = es.getSviElementi().get(i);
                                         l0.setElement(e);
                                         l0.setLayer();
@@ -241,7 +241,7 @@ public class VT100Application {
                                     }
                                 }
                                 if (!find) {
-                                    drawer.drawWindow1("Element nije pronadjen\n");
+                                    drawer.drawWindow1("Element nije pronađen\n");
                                 }
                             } catch (Exception ex) {
                                 System.out.println("Pogrešan parametar " + choice2[1] + "! Message: " + ex.getMessage());

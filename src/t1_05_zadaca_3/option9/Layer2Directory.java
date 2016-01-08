@@ -41,9 +41,9 @@ public class Layer2Directory implements LayerInterface {
     @Override
     public String ispis() {
         if (create()) {
-            return visitor.visit(this) + "Kreiran je direktorij " + e.getNaziv() + ": u Layer2Directory";
+            return visitor.visit(this) + "Kreiran je direktorij " + e.getNaziv() + ": u Layer2Directory\n";
         } else {
-            return visitor.visit(this) + "Element nije direktorij";
+            return visitor.visit(this) + "Element nije direktorij\n";
         }
     }
 }
