@@ -5,24 +5,17 @@
  */
 package t1_05_zadaca_3.application;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import t1_05_zadaca_3.mvc.ElementController;
 import t1_05_zadaca_3.option9.Layer0Main;
+import t1_05_zadaca_3.option9.LayerNameDisplayVisitor;
+import t1_05_zadaca_3.option9.LayerVisitor;
 import t1_05_zadaca_3.structure.CareTaker;
 import t1_05_zadaca_3.structure.Element;
 import t1_05_zadaca_3.structure.ElementStructure;
 import t1_05_zadaca_3.structure.Originator;
 import t1_05_zadaca_3.structure.PrintStructure;
 import t1_05_zadaca_3.terminal.Drawer;
-import t1_05_zadaca_3.terminal.IspisO;
 import static t1_05_zadaca_3.terminal.IspisO.ANSI_ESC;
-import t1_05_zadaca_3.terminal.IspisV;
-import t1_05_zadaca_3.terminal.ObradaTeksta;
 import t1_05_zadaca_3.thread.ThreadController;
 
 /**
@@ -215,14 +208,9 @@ public class VT100Application {
                         break;
                     }
                     case "9": {
-                        //Layers
-                        //TODO: s visitorom dohvatiti sve elemente u listu u Layer0Main
-                        Layer0Main l0 = new Layer0Main(args);
-//                        String s = "";
-//                        for (int i = 0; i < es.getSviElementi().size(); i++) {
-//                            s += " " + i;
-//                        }
-//                        drawer.drawWindow2(s);// ima ih 18
+                        //kreiranje novih dir i dat prema elementima u strukturi
+                        LayerVisitor layerVisitor = new LayerNameDisplayVisitor();
+                        Layer0Main l0 = new Layer0Main(args, layerVisitor);
 
                         if (choice2.length < 2) {
                             int i = 0;
@@ -258,19 +246,6 @@ public class VT100Application {
                             } catch (Exception ex) {
                                 System.out.println("Pogrešan parametar " + choice2[1] + "! Message: " + ex.getMessage());
                             }
-
-                            
-//                        StructurePart struktura = new ElementStructure();
-//                        struktura.accept(new StructurePartDoVisitor(), es.getKorijenskiElement(), es);
-//                        
-//                        es.accept(new StructurePartDoVisitor(), es.getKorijenskiElement(), es);
-//                        int i = 0;
-//                        String s = "Odaberite broj elementa koji želite pretvoriti u dat/dir:\n";
-//                        for (Element e: es.getSviElementi()) {
-//                            s += i + " " + e.toString() + "\n";
-//                            i++;
-//                        }
-//                        drawer.drawWindow2(s);
                         }
                         break;
                     }

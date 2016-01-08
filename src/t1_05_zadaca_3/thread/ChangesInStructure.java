@@ -5,8 +5,6 @@
  */
 package t1_05_zadaca_3.thread;
 
-import java.util.Dictionary;
-import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Map;
 import t1_05_zadaca_3.structure.Element;

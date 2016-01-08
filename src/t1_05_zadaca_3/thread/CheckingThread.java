@@ -5,13 +5,7 @@
  */
 package t1_05_zadaca_3.thread;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import t1_05_zadaca_3.structure.CareTaker;
-import t1_05_zadaca_3.structure.Element;
 import t1_05_zadaca_3.structure.ElementStructure;
-import t1_05_zadaca_3.structure.Originator;
 import t1_05_zadaca_3.terminal.Drawer;
 
 /**

@@ -6,8 +6,6 @@
 package t1_05_zadaca_3.thread;
 
 import t1_05_zadaca_3.application.MainMenu;
-import static t1_05_zadaca_3.application.VT100Application.izvor;
-import static t1_05_zadaca_3.application.VT100Application.save;
 import t1_05_zadaca_3.structure.CareTaker;
 import t1_05_zadaca_3.structure.ElementStructure;
 import t1_05_zadaca_3.structure.Originator;

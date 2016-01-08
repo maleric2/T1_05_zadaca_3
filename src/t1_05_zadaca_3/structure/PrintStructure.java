@@ -15,8 +15,6 @@ public class PrintStructure {
 
     public static final String ANSI_ESC = "\033[";
 
-    //Zelena i žuta za dretve: 1;32m  i   1;33m
-    
     private String ispisStrukture;
 
     public PrintStructure() {

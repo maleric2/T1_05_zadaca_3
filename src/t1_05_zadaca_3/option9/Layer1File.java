@@ -20,8 +20,10 @@ public class Layer1File implements LayerInterface {
 
     private Element e;
     private String putanja;
+    private LayerVisitor visitor;
 
-    public Layer1File(Element e, String putanja) {
+    public Layer1File(Element e, String putanja, LayerVisitor visitorLayer1) {
+        this.visitor=visitorLayer1;
         this.e = e;
         this.putanja = putanja;
     }
@@ -46,10 +48,11 @@ public class Layer1File implements LayerInterface {
 
     @Override
     public String ispis() {
+        
         if (create()) {
-            return "Kreirana je datoteka " + e.getNaziv() + ": u layeru Layer1File";
+            return visitor.visit(this) + "Kreirana je datoteka " + e.getNaziv() + ": u Layer1File";
         } else {
-            return "Element nije datoteka";
+           return visitor.visit(this) + "Element nije datoteka";
         }
 
     }
